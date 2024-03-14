@@ -4,6 +4,7 @@
 *.bin
 .idea/
 .vscode/
+models_new/
 models/depth/depth_models/
 # New ones added by Tiffany
 *.p

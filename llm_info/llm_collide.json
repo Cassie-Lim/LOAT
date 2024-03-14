@@ -1,0 +1,3 @@
+{
+    "collide_safe_objects": ["BasketBall", "Blinds", "Book", "Cloth", "Curtains", "Cushion", "DishSponge", "Footstool", "GarbageCan", "HandTowel", "HandTowelHolder", "LaundryHamper", "LaundryHamperLid", "Newspaper", "Ottoman", "PaperTowel", "PaperTowelRoll", "Pencil", "Pillow", "Poster", "RemoteControl", "Shelf", "SoapBar", "TissueBox", "ToiletPaperRoll", "Towel", "TowelHolder", "TeddyBear"]
+}

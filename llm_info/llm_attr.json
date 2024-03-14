@@ -1,0 +1,1202 @@
+{
+    "AlarmClock": {
+        "collide_safe": false,
+        "nearby_objects": [
+            "Bed",
+            "Cabinet",
+            "CoffeeTable",
+            "CounterTop",
+            "Desk",
+            "Dresser",
+            "Shelf",
+            "SideTable"
+        ],
+        "containers": [
+            "Cabinet"
+        ]
+    },
+    "Apple": {
+        "collide_safe": false,
+        "nearby_objects": [
+            "Cabinet",
+            "CoffeeTable",
+            "CounterTop",
+            "DiningTable",
+            "Drawer",
+            "Fridge",
+            "GarbageCan",
+            "Microwave",
+            "Shelf",
+            "SideTable",
+            "SinkBasin"
+        ],
+        "containers": [
+            "Microwave",
+            "Cabinet",
+            "Fridge"
+        ]
+    },
+    "AppleSliced": {
+        "collide_safe": false,
+        "nearby_objects": [
+            "Cabinet",
+            "CoffeeTable",
+            "CounterTop",
+            "DiningTable",
+            "Drawer",
+            "Fridge",
+            "GarbageCan",
+            "Microwave",
+            "Shelf",
+            "SideTable",
+            "SinkBasin"
+        ],
+        "containers": [
+            "Cabinet",
+            "Fridge"
+        ]
+    },
+    "BaseballBat": {
+        "collide_safe": false,
+        "nearby_objects": [
+            "Bed",
+            "Cabinet",
+            "Cart",
+            "Desk",
+            "Drawer",
+            "Dresser",
+            "GarbageCan",
+            "Shelf",
+            "SideTable",
+            "Sofa",
+            "TVStand"
+        ],
+        "containers": [
+            "Cabinet"
+        ]
+    },
+    "BasketBall": {
+        "collide_safe": true,
+        "nearby_objects": [
+            "Bed",
+            "Cabinet",
+            "Cart",
+            "Desk",
+            "Drawer",
+            "Dresser",
+            "GarbageCan",
+            "Shelf",
+            "SideTable",
+            "Sofa",
+            "TVStand"
+        ],
+        "containers": []
+    },
+    "Book": {
+        "collide_safe": true,
+        "nearby_objects": [
+            "ArmChair",
+            "Bed",
+            "Cabinet",
+            "Cart",
+            "CoffeeTable",
+            "CounterTop",
+            "Desk",
+            "DiningTable",
+            "Drawer",
+            "Dresser",
+            "Ottoman",
+            "Shelf",
+            "SideTable",
+            "TVStand"
+        ],
+        "containers": [
+            "Cabinet",
+            "Safe"
+        ]
+    },
+    "Bowl": {
+        "collide_safe": false,
+        "nearby_objects": [
+            "Cabinet",
+            "CoffeeTable",
+            "CounterTop",
+            "Desk",
+            "DiningTable",
+            "Drawer",
+            "Dresser",
+            "Fridge",
+            "Microwave",
+            "Shelf",
+            "SideTable",
+            "SinkBasin",
+            "StoveBurner"
+        ],
+        "containers": [
+            "Microwave",
+            "Cabinet",
+            "Fridge"
+        ]
+    },
+    "Box": {
+        "collide_safe": false,
+        "nearby_objects": [
+            "Cabinet",
+            "Cart",
+            "CoffeeTable",
+            "CounterTop",
+            "Desk",
+            "DiningTable",
+            "Drawer",
+            "Dresser",
+            "GarbageCan",
+            "Shelf",
+            "SideTable",
+            "TVStand"
+        ],
+        "containers": [
+            "Cabinet",
+            "Safe"
+        ]
+    },
+    "Bread": {
+        "collide_safe": false,
+        "nearby_objects": [
+            "Cabinet",
+            "CounterTop",
+            "DiningTable",
+            "Drawer",
+            "Fridge",
+            "Microwave",
+            "Shelf",
+            "SinkBasin"
+        ],
+        "containers": [
+            "Microwave",
+            "Cabinet",
+            "Fridge"
+        ]
+    },
+    "BreadSliced": {
+        "collide_safe": false,
+        "nearby_objects": [
+            "Cabinet",
+            "CounterTop",
+            "DiningTable",
+            "Drawer",
+            "Fridge",
+            "Microwave",
+            "Shelf",
+            "SinkBasin",
+            "StoveBurner"
+        ],
+        "containers": [
+            "Microwave",
+            "Cabinet",
+            "Fridge"
+        ]
+    },
+    "ButterKnife": {
+        "collide_safe": false,
+        "nearby_objects": [
+            "Cabinet",
+            "CounterTop",
+            "DiningTable",
+            "Drawer",
+            "Fridge",
+            "Shelf",
+            "SinkBasin",
+            "StoveBurner"
+        ],
+        "containers": [
+            "Cabinet",
+            "Drawer",
+            "Fridge"
+        ]
+    },
+    "CD": {
+        "collide_safe": false,
+        "nearby_objects": [
+            "Bed",
+            "Cabinet",
+            "Desk",
+            "Drawer",
+            "Dresser",
+            "Shelf",
+            "SideTable",
+            "Sofa",
+            "TVStand"
+        ],
+        "containers": [
+            "Drawer"
+        ]
+    },
+    "Candle": {
+        "collide_safe": false,
+        "nearby_objects": [
+            "BathtubBasin",
+            "Cabinet",
+            "CoffeeTable",
+            "CounterTop",
+            "Desk",
+            "DiningTable",
+            "Dresser",
+            "GarbageCan",
+            "Shelf",
+            "SideTable",
+            "Toilet"
+        ],
+        "containers": [
+            "Cabinet"
+        ]
+    },
+    "CellPhone": {
+        "collide_safe": false,
+        "nearby_objects": [
+            "ArmChair",
+            "Bed",
+            "Cabinet",
+            "CoffeeTable",
+            "CounterTop",
+            "Desk",
+            "DiningTable",
+            "Drawer",
+            "Dresser",
+            "Shelf",
+            "SideTable",
+            "Sofa",
+            "TVStand"
+        ],
+        "containers": [
+            "Safe"
+        ]
+    },
+    "Cloth": {
+        "collide_safe": true,
+        "nearby_objects": [
+            "BathtubBasin",
+            "Cabinet",
+            "CounterTop",
+            "Drawer",
+            "Dresser",
+            "Shelf",
+            "SideTable",
+            "SinkBasin",
+            "Toilet"
+        ],
+        "containers": []
+    },
+    "CreditCard": {
+        "collide_safe": false,
+        "nearby_objects": [
+            "Bed",
+            "Cabinet",
+            "CoffeeTable",
+            "CounterTop",
+            "Desk",
+            "DiningTable",
+            "Drawer",
+            "Dresser",
+            "Shelf",
+            "SideTable",
+            "Sofa",
+            "TVStand"
+        ],
+        "containers": [
+            "Drawer",
+            "Safe"
+        ]
+    },
+    "Cup": {
+        "collide_safe": false,
+        "nearby_objects": [
+            "Cabinet",
+            "CoffeeTable",
+            "CounterTop",
+            "Desk",
+            "DiningTable",
+            "Drawer",
+            "Microwave",
+            "Shelf",
+            "SideTable",
+            "SinkBasin",
+            "Sofa",
+            "StoveBurner",
+            "TVStand"
+        ],
+        "containers": [
+            "Microwave",
+            "Cabinet",
+            "Fridge"
+        ]
+    },
+    "DeskLamp": {
+        "collide_safe": false,
+        "nearby_objects": [
+            "CoffeeTable",
+            "CounterTop",
+            "Desk",
+            "DiningTable",
+            "Dresser",
+            "Shelf",
+            "SideTable"
+        ],
+        "containers": []
+    },
+    "DishSponge": {
+        "collide_safe": true,
+        "nearby_objects": [
+            "BathtubBasin",
+            "Cabinet",
+            "CounterTop",
+            "Drawer",
+            "SideTable",
+            "SinkBasin",
+            "Toilet"
+        ],
+        "containers": [
+            "Cabinet"
+        ]
+    },
+    "Egg": {
+        "collide_safe": false,
+        "nearby_objects": [
+            "Cabinet",
+            "CounterTop",
+            "DiningTable",
+            "Drawer",
+            "Fridge",
+            "Shelf",
+            "SinkBasin"
+        ],
+        "containers": [
+            "Fridge"
+        ]
+    },
+    "Faucet": {
+        "collide_safe": false,
+        "nearby_objects": [
+            "BathtubBasin",
+            "CounterTop",
+            "SinkBasin"
+        ],
+        "containers": []
+    },
+    "FloorLamp": {
+        "collide_safe": false,
+        "nearby_objects": [
+            "ArmChair",
+            "CoffeeTable",
+            "Desk",
+            "DiningTable",
+            "Ottoman",
+            "Sofa",
+            "TVStand"
+        ],
+        "containers": []
+    },
+    "Fork": {
+        "collide_safe": false,
+        "nearby_objects": [
+            "Cabinet",
+            "CoffeeTable",
+            "CounterTop",
+            "DiningTable",
+            "Drawer",
+            "Shelf",
+            "SinkBasin"
+        ],
+        "containers": [
+            "Cabinet",
+            "Drawer"
+        ]
+    },
+    "Glassbottle": {
+        "collide_safe": false,
+        "nearby_objects": [
+            "Cabinet",
+            "CoffeeTable",
+            "CounterTop",
+            "DiningTable",
+            "Drawer",
+            "Fridge",
+            "Shelf"
+        ],
+        "containers": [
+            "Cabinet",
+            "Drawer"
+        ]
+    },
+    "HandTowel": {
+        "collide_safe": true,
+        "nearby_objects": [
+            "BathtubBasin",
+            "Cabinet",
+            "CoffeeTable",
+            "CounterTop",
+            "Drawer",
+            "Shelf",
+            "SinkBasin"
+        ],
+        "containers": [
+            "Cabinet",
+            "Drawer"
+        ]
+    },
+    "HousePlant": {
+        "collide_safe": false,
+        "nearby_objects": [
+            "CoffeeTable",
+            "CounterTop",
+            "Desk",
+            "DiningTable",
+            "Dresser",
+            "Shelf",
+            "SideTable",
+            "TVStand",
+            "Window"
+        ],
+        "containers": []
+    },
+    "Kettle": {
+        "collide_safe": false,
+        "nearby_objects": [
+            "Cabinet",
+            "CoffeeMachine",
+            "CoffeeTable",
+            "CounterTop",
+            "DiningTable",
+            "Fridge",
+            "Microwave",
+            "SideTable",
+            "SinkBasin",
+            "StoveBurner"
+        ],
+        "containers": [
+            "Cabinet"
+        ]
+    },
+    "KeyChain": {
+        "collide_safe": false,
+        "nearby_objects": [
+            "ArmChair",
+            "Bed",
+            "CoffeeTable",
+            "CounterTop",
+            "Desk",
+            "DiningTable",
+            "Dresser",
+            "Shelf",
+            "SideTable",
+            "TVStand"
+        ],
+        "containers": [
+            "Cabinet",
+            "Drawer",
+            "Safe"
+        ]
+    },
+    "Knife": {
+        "collide_safe": false,
+        "nearby_objects": [
+            "CounterTop",
+            "DiningTable",
+            "Drawer",
+            "Fridge",
+            "SinkBasin",
+            "StoveBurner"
+        ],
+        "containers": [
+            "Cabinet",
+            "Drawer"
+        ]
+    },
+    "Ladle": {
+        "collide_safe": false,
+        "nearby_objects": [
+            "CounterTop",
+            "DiningTable",
+            "Drawer",
+            "Fridge",
+            "Microwave",
+            "SinkBasin",
+            "StoveBurner"
+        ],
+        "containers": [
+            "Cabinet",
+            "Drawer"
+        ]
+    },
+    "Laptop": {
+        "collide_safe": false,
+        "nearby_objects": [
+            "ArmChair",
+            "Bed",
+            "CoffeeTable",
+            "Desk",
+            "DiningTable",
+            "Dresser",
+            "Shelf",
+            "SideTable",
+            "Sofa",
+            "TVStand"
+        ],
+        "containers": []
+    },
+    "LaundryHamperLid": {
+        "collide_safe": true,
+        "nearby_objects": [
+            "ArmChair",
+            "Bed",
+            "Cart",
+            "Dresser",
+            "Ottoman",
+            "Sofa"
+        ],
+        "containers": []
+    },
+    "Lettuce": {
+        "collide_safe": false,
+        "nearby_objects": [
+            "CounterTop",
+            "DiningTable",
+            "Drawer",
+            "Fridge",
+            "Shelf",
+            "SinkBasin"
+        ],
+        "containers": [
+            "Microwave",
+            "Cabinet",
+            "Fridge"
+        ]
+    },
+    "LettuceSliced": {
+        "collide_safe": false,
+        "nearby_objects": [
+            "CounterTop",
+            "DiningTable",
+            "Fridge",
+            "Shelf",
+            "SinkBasin"
+        ],
+        "containers": [
+            "Microwave",
+            "Cabinet",
+            "Fridge"
+        ]
+    },
+    "LightSwitch": {
+        "collide_safe": false,
+        "nearby_objects": [
+            "ArmChair",
+            "Bed",
+            "Cabinet",
+            "CoffeeTable",
+            "CounterTop",
+            "Desk",
+            "DiningTable",
+            "Drawer",
+            "Dresser",
+            "GarbageCan",
+            "Safe",
+            "Shelf",
+            "SideTable",
+            "Sofa",
+            "TVStand",
+            "Toilet"
+        ],
+        "containers": []
+    },
+    "Mug": {
+        "collide_safe": false,
+        "nearby_objects": [
+            "Cabinet",
+            "CoffeeMachine",
+            "CoffeeTable",
+            "CounterTop",
+            "Desk",
+            "DiningTable",
+            "Dresser",
+            "Fridge",
+            "Microwave",
+            "Shelf",
+            "SideTable",
+            "SinkBasin"
+        ],
+        "containers": [
+            "Microwave",
+            "Cabinet",
+            "Fridge"
+        ]
+    },
+    "Newspaper": {
+        "collide_safe": true,
+        "nearby_objects": [
+            "ArmChair",
+            "CoffeeTable",
+            "Desk",
+            "DiningTable",
+            "Ottoman",
+            "Shelf",
+            "SideTable",
+            "Sofa",
+            "TVStand"
+        ],
+        "containers": []
+    },
+    "Pan": {
+        "collide_safe": false,
+        "nearby_objects": [
+            "Cabinet",
+            "CounterTop",
+            "DiningTable",
+            "Drawer",
+            "SinkBasin",
+            "StoveBurner"
+        ],
+        "containers": [
+            "Cabinet"
+        ]
+    },
+    "PaperTowel": {
+        "collide_safe": true,
+        "nearby_objects": [
+            "Cabinet",
+            "CounterTop",
+            "DiningTable",
+            "Drawer",
+            "Shelf"
+        ],
+        "containers": [
+            "Cabinet"
+        ]
+    },
+    "PaperTowelRoll": {
+        "collide_safe": true,
+        "nearby_objects": [
+            "Cabinet",
+            "CounterTop",
+            "DiningTable",
+            "Drawer",
+            "Shelf",
+            "SideTable",
+            "Toilet"
+        ],
+        "containers": [
+            "Cabinet"
+        ]
+    },
+    "Pen": {
+        "collide_safe": false,
+        "nearby_objects": [
+            "Desk",
+            "DiningTable",
+            "Drawer",
+            "Dresser",
+            "Shelf",
+            "SideTable"
+        ],
+        "containers": [
+            "Cabinet",
+            "Drawer"
+        ]
+    },
+    "Pencil": {
+        "collide_safe": true,
+        "nearby_objects": [
+            "CounterTop",
+            "Desk",
+            "DiningTable",
+            "Drawer",
+            "Dresser",
+            "Shelf",
+            "SideTable"
+        ],
+        "containers": [
+            "Cabinet",
+            "Drawer"
+        ]
+    },
+    "PepperShaker": {
+        "collide_safe": false,
+        "nearby_objects": [
+            "Cabinet",
+            "CounterTop",
+            "DiningTable",
+            "Drawer",
+            "Shelf",
+            "SideTable"
+        ],
+        "containers": [
+            "Cabinet",
+            "Drawer"
+        ]
+    },
+    "Pillow": {
+        "collide_safe": true,
+        "nearby_objects": [
+            "ArmChair",
+            "Bed",
+            "Sofa"
+        ],
+        "containers": []
+    },
+    "Plate": {
+        "collide_safe": false,
+        "nearby_objects": [
+            "Cabinet",
+            "CoffeeTable",
+            "CounterTop",
+            "Desk",
+            "DiningTable",
+            "Drawer",
+            "Fridge",
+            "Microwave",
+            "Shelf",
+            "SinkBasin",
+            "StoveBurner"
+        ],
+        "containers": [
+            "Microwave",
+            "Cabinet"
+        ]
+    },
+    "Plunger": {
+        "collide_safe": false,
+        "nearby_objects": [
+            "BathtubBasin",
+            "Cabinet",
+            "Toilet"
+        ],
+        "containers": [
+            "Cabinet"
+        ]
+    },
+    "Pot": {
+        "collide_safe": false,
+        "nearby_objects": [
+            "Cabinet",
+            "CounterTop",
+            "DiningTable",
+            "Drawer",
+            "SinkBasin",
+            "StoveBurner"
+        ],
+        "containers": [
+            "Cabinet"
+        ]
+    },
+    "Potato": {
+        "collide_safe": false,
+        "nearby_objects": [
+            "CounterTop",
+            "DiningTable",
+            "Drawer",
+            "Fridge",
+            "Shelf",
+            "SinkBasin"
+        ],
+        "containers": [
+            "Microwave",
+            "Cabinet",
+            "Fridge"
+        ]
+    },
+    "PotatoSliced": {
+        "collide_safe": false,
+        "nearby_objects": [
+            "CounterTop",
+            "DiningTable",
+            "Drawer",
+            "Fridge",
+            "Shelf"
+        ],
+        "containers": [
+            "Microwave",
+            "Cabinet",
+            "Fridge"
+        ]
+    },
+    "RemoteControl": {
+        "collide_safe": true,
+        "nearby_objects": [
+            "ArmChair",
+            "Bed",
+            "CoffeeTable",
+            "Desk",
+            "Dresser",
+            "Ottoman",
+            "SideTable",
+            "Sofa",
+            "TVStand"
+        ],
+        "containers": []
+    },
+    "SaltShaker": {
+        "collide_safe": false,
+        "nearby_objects": [
+            "Cabinet",
+            "CounterTop",
+            "DiningTable",
+            "Drawer",
+            "Fridge",
+            "Microwave",
+            "Shelf",
+            "SideTable"
+        ],
+        "containers": [
+            "Cabinet",
+            "Drawer"
+        ]
+    },
+    "ScrubBrush": {
+        "collide_safe": false,
+        "nearby_objects": [
+            "BathtubBasin",
+            "Cabinet",
+            "CounterTop",
+            "Shelf",
+            "SinkBasin"
+        ],
+        "containers": [
+            "Cabinet",
+            "Drawer"
+        ]
+    },
+    "ShowerDoor": {
+        "collide_safe": false,
+        "nearby_objects": [
+            "BathtubBasin",
+            "Shelf",
+            "SinkBasin",
+            "Toilet"
+        ],
+        "containers": []
+    },
+    "SoapBar": {
+        "collide_safe": true,
+        "nearby_objects": [
+            "BathtubBasin",
+            "Cabinet",
+            "CounterTop",
+            "Dresser",
+            "Shelf",
+            "SinkBasin",
+            "Toilet"
+        ],
+        "containers": [
+            "Cabinet"
+        ]
+    },
+    "SoapBottle": {
+        "collide_safe": false,
+        "nearby_objects": [
+            "BathtubBasin",
+            "Cabinet",
+            "CounterTop",
+            "Shelf",
+            "SideTable",
+            "SinkBasin",
+            "Toilet"
+        ],
+        "containers": [
+            "Cabinet"
+        ]
+    },
+    "Spatula": {
+        "collide_safe": false,
+        "nearby_objects": [
+            "Cabinet",
+            "CounterTop",
+            "Drawer",
+            "Fridge",
+            "Microwave",
+            "Ottoman",
+            "Shelf",
+            "SinkBasin",
+            "StoveBurner"
+        ],
+        "containers": [
+            "Cabinet",
+            "Drawer"
+        ]
+    },
+    "Spoon": {
+        "collide_safe": false,
+        "nearby_objects": [
+            "Cabinet",
+            "CoffeeTable",
+            "CounterTop",
+            "DiningTable",
+            "Drawer",
+            "Fridge",
+            "Microwave",
+            "Shelf",
+            "SinkBasin",
+            "StoveBurner"
+        ],
+        "containers": [
+            "Cabinet",
+            "Drawer"
+        ]
+    },
+    "SprayBottle": {
+        "collide_safe": false,
+        "nearby_objects": [
+            "BathtubBasin",
+            "Cabinet",
+            "CounterTop",
+            "Dresser",
+            "Shelf",
+            "SideTable",
+            "SinkBasin",
+            "Toilet"
+        ],
+        "containers": [
+            "Cabinet"
+        ]
+    },
+    "Statue": {
+        "collide_safe": false,
+        "nearby_objects": [
+            "Cabinet",
+            "CoffeeTable",
+            "CounterTop",
+            "Desk",
+            "DiningTable",
+            "Drawer",
+            "Dresser",
+            "Shelf",
+            "SideTable",
+            "TVStand"
+        ],
+        "containers": [
+            "Cabinet",
+            "Safe"
+        ]
+    },
+    "StoveKnob": {
+        "collide_safe": false,
+        "nearby_objects": [
+            "Cabinet",
+            "CounterTop",
+            "Drawer",
+            "Fridge",
+            "Microwave",
+            "Ottoman",
+            "Shelf",
+            "StoveBurner"
+        ],
+        "containers": []
+    },
+    "TeddyBear": {
+        "collide_safe": true,
+        "nearby_objects": [
+            "Bed",
+            "Cabinet",
+            "Drawer",
+            "Dresser",
+            "Ottoman",
+            "Shelf",
+            "Sofa"
+        ],
+        "containers": []
+    },
+    "Television": {
+        "collide_safe": false,
+        "nearby_objects": [
+            "Cabinet",
+            "CoffeeTable",
+            "Desk",
+            "Drawer",
+            "Dresser",
+            "Shelf",
+            "SideTable",
+            "Sofa",
+            "TVStand"
+        ],
+        "containers": []
+    },
+    "TennisRacket": {
+        "collide_safe": false,
+        "nearby_objects": [
+            "Bed",
+            "Cabinet",
+            "Cart",
+            "Desk",
+            "Drawer",
+            "Dresser",
+            "GarbageCan",
+            "Shelf",
+            "SideTable",
+            "Sofa",
+            "TVStand"
+        ],
+        "containers": [
+            "Cabinet"
+        ]
+    },
+    "TissueBox": {
+        "collide_safe": true,
+        "nearby_objects": [
+            "BathtubBasin",
+            "Bed",
+            "Cabinet",
+            "CoffeeTable",
+            "CounterTop",
+            "Desk",
+            "DiningTable",
+            "Dresser",
+            "Shelf",
+            "SideTable",
+            "SinkBasin",
+            "Sofa",
+            "TVStand"
+        ],
+        "containers": [
+            "Cabinet"
+        ]
+    },
+    "ToiletPaper": {
+        "collide_safe": false,
+        "nearby_objects": [
+            "BathtubBasin",
+            "Cabinet",
+            "CounterTop",
+            "Drawer",
+            "GarbageCan",
+            "Shelf",
+            "SinkBasin",
+            "Toilet"
+        ],
+        "containers": [
+            "Cabinet"
+        ]
+    },
+    "ToiletPaperRoll": {
+        "collide_safe": true,
+        "nearby_objects": [
+            "Cabinet",
+            "Drawer",
+            "GarbageCan",
+            "Shelf",
+            "SinkBasin",
+            "Toilet"
+        ],
+        "containers": [
+            "Cabinet"
+        ]
+    },
+    "Tomato": {
+        "collide_safe": false,
+        "nearby_objects": [
+            "CoffeeTable",
+            "CounterTop",
+            "DiningTable",
+            "Fridge",
+            "Microwave",
+            "Shelf",
+            "SinkBasin"
+        ],
+        "containers": [
+            "Microwave",
+            "Cabinet",
+            "Fridge"
+        ]
+    },
+    "TomatoSliced": {
+        "collide_safe": false,
+        "nearby_objects": [
+            "CoffeeTable",
+            "CounterTop",
+            "DiningTable",
+            "Fridge",
+            "Microwave",
+            "Shelf"
+        ],
+        "containers": [
+            "Microwave",
+            "Cabinet",
+            "Fridge"
+        ]
+    },
+    "Towel": {
+        "collide_safe": true,
+        "nearby_objects": [
+            "BathtubBasin",
+            "Bed",
+            "Cabinet",
+            "Cart",
+            "CoffeeTable",
+            "CounterTop",
+            "DiningTable",
+            "Drawer",
+            "Dresser",
+            "Shelf",
+            "SideTable",
+            "SinkBasin",
+            "Toilet"
+        ],
+        "containers": [
+            "Cabinet"
+        ]
+    },
+    "Vase": {
+        "collide_safe": false,
+        "nearby_objects": [
+            "CoffeeTable",
+            "CounterTop",
+            "Desk",
+            "DiningTable",
+            "Dresser",
+            "Shelf",
+            "SideTable"
+        ],
+        "containers": [
+            "Cabinet"
+        ]
+    },
+    "Watch": {
+        "collide_safe": false,
+        "nearby_objects": [
+            "Bed",
+            "CoffeeTable",
+            "Desk",
+            "Drawer",
+            "Dresser",
+            "Shelf",
+            "SideTable",
+            "TVStand"
+        ],
+        "containers": [
+            "Cabinet",
+            "Drawer",
+            "Safe"
+        ]
+    },
+    "WateringCan": {
+        "collide_safe": false,
+        "nearby_objects": [
+            "CounterTop",
+            "Shelf",
+            "SinkBasin"
+        ],
+        "containers": [
+            "Cabinet"
+        ]
+    },
+    "WineBottle": {
+        "collide_safe": false,
+        "nearby_objects": [
+            "Cabinet",
+            "CounterTop",
+            "DiningTable",
+            "Fridge",
+            "Shelf"
+        ],
+        "containers": [
+            "Cabinet"
+        ]
+    }
+}

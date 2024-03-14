@@ -1,0 +1,55 @@
+FROM_IDX=$1
+TO_IDX=$2
+SPLIT=$3
+NAME=$4
+SEM_POLICTY_TYPE=$5
+MLM_OPTIONS=$6
+LANG_GRANULARITY=${7}
+GPU_ID=${8}
+
+
+# example usage:
+# add_bycyw/scripts/inference_base_gtdepth.sh 0 510 valid_unseen testrun mlm "aggregate_sum sem_search_all spatial_norm temperature_annealing new_obstacle_fn no_slice_replay" high
+# 
+# 在test上跑
+# conda activate prompter
+# cd /home/tmn/Desktop/cyw/prompter-alfred-YOLO-no_replan_v1/
+# CUDA_VISIBLE_DEVICES=1 add_bycyw/scripts/inference_base_gtdepth.sh 0 200 tests_unseen prompter512_yolo_v1_1 mlm "aggregate_sum sem_search_all spatial_norm temperature_annealing new_obstacle_fn no_slice_replay" high_low 0
+# CUDA_VISIBLE_DEVICES=1 add_bycyw/scripts/inference_base_gtdepth.sh 200 400 tests_unseen prompter512_yolo_v1_1 mlm "aggregate_sum sem_search_all spatial_norm temperature_annealing new_obstacle_fn no_slice_replay" high_low 0
+# CUDA_VISIBLE_DEVICES=1 add_bycyw/scripts/inference_base_gtdepth.sh 400 600 tests_unseen prompter512_yolo_v1_1 mlm "aggregate_sum sem_search_all spatial_norm temperature_annealing new_obstacle_fn no_slice_replay" high_low 0
+# CUDA_VISIBLE_DEVICES=1 add_bycyw/scripts/inference_base_gtdepth.sh 600 800 tests_unseen prompter512_yolo_v1_1 mlm "aggregate_sum sem_search_all spatial_norm temperature_annealing new_obstacle_fn no_slice_replay" high_low 0
+# CUDA_VISIBLE_DEVICES=2 add_bycyw/scripts/inference_base_gtdepth.sh 800 1000 tests_unseen prompter512_yolo_v1_1 mlm "aggregate_sum sem_search_all spatial_norm temperature_annealing new_obstacle_fn no_slice_replay" high_low 0
+# CUDA_VISIBLE_DEVICES=2 add_bycyw/scripts/inference_base_gtdepth.sh 1000 1200 tests_unseen prompter512_yolo_v1_1 mlm "aggregate_sum sem_search_all spatial_norm temperature_annealing new_obstacle_fn no_slice_replay" high_low 0
+# CUDA_VISIBLE_DEVICES=2 add_bycyw/scripts/inference_base_gtdepth.sh 1200 1400 tests_unseen prompter512_yolo_v1_1 mlm "aggregate_sum sem_search_all spatial_norm temperature_annealing new_obstacle_fn no_slice_replay" high_low 0
+# CUDA_VISIBLE_DEVICES=2 add_bycyw/scripts/inference_base_gtdepth.sh 1400 1600 tests_unseen prompter512_yolo_v1_1 mlm "aggregate_sum sem_search_all spatial_norm temperature_annealing new_obstacle_fn no_slice_replay" high_low 0
+
+python add_bycyw/code/main.py \
+-n1 \
+--max_episode_length 1000 \
+--num_local_steps 25 \
+--num_processes 1 \
+--eval_split ${SPLIT} \
+--from_idx ${FROM_IDX} \
+--to_idx ${TO_IDX} \
+--max_fails 10 \
+--debug_local \
+--use_sem_seg \
+--ignore_sliced \
+--set_dn ${NAME} \
+--which_gpu ${GPU_ID} \
+--depth_gpu ${GPU_ID} \
+--sem_seg_gpu ${GPU_ID} \
+--sem_gpu_id ${GPU_ID} \
+--sem_policy_type ${SEM_POLICTY_TYPE} \
+--mlm_fname mlmscore_gpt \
+--mlm_options ${MLM_OPTIONS} \
+--seed 1 \
+--splits alfred_data_small/splits/oct21.json \
+--grid_sz 240 \
+--mlm_temperature 1 \
+--approx_last_action_success \
+--language_granularity ${LANG_GRANULARITY} \
+--centering_strategy local_adjustment \
+--target_offset_interaction 0.5 \
+--obstacle_selem 9 \
+--result_file add_bycyw/results_exp_tests/ \

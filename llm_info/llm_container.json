@@ -1,0 +1,7 @@
+{
+  "Fridge": ["Apple", "AppleSliced", "Bowl", "Bread", "BreadSliced", "ButterKnife", "Cup", "Egg", "Lettuce", "LettuceSliced", "Mug", "Potato", "PotatoSliced", "Tomato", "TomatoSliced"],
+  "Cabinet": ["AlarmClock", "Apple", "AppleSliced", "BaseballBat", "Book", "Bowl", "Box", "Bread", "BreadSliced", "ButterKnife", "Candle", "Cup", "DishSponge", "Fork", "Glassbottle", "HandTowel", "Kettle", "KeyChain", "Knife", "Ladle", "Lettuce", "LettuceSliced", "Mug", "Pan", "PaperTowel", "PaperTowelRoll", "Pen", "Pencil", "PepperShaker", "Plate", "Plunger", "Pot", "Potato", "PotatoSliced", "SaltShaker", "ScrubBrush", "SoapBar", "SoapBottle", "Spatula", "Spoon", "SprayBottle", "Statue", "TennisRacket", "TissueBox", "ToiletPaper", "ToiletPaperRoll", "Tomato", "TomatoSliced", "Towel", "Vase", "Watch", "WateringCan", "WineBottle"],
+  "Microwave": ["Apple", "Bowl", "Bread", "BreadSliced", "Cup", "Lettuce", "LettuceSliced", "Mug", "Plate", "Potato", "PotatoSliced", "Tomato", "TomatoSliced"],
+  "Drawer": ["ButterKnife", "CD", "CreditCard", "Fork", "Glassbottle", "HandTowel", "KeyChain", "Knife", "Ladle", "Pen", "Pencil", "PepperShaker", "SaltShaker", "ScrubBrush", "Spatula", "Spoon", "Watch"],
+  "Safe": ["Book", "Box", "CellPhone", "CreditCard", "KeyChain", "Statue", "Watch"]
+}

@@ -230,7 +230,6 @@ def main():
     # ******************
     elif args.sem_policy_type == "seq":
         lan_gran = args.language_granularity if args.language_granularity != "gt" else "high_low"
-        # __init__(self, input_shape, output_shape, occur_fname, device,options=list()):
         Unet_model = SEQ_SEARCH((240, 240), (args.grid_sz, args.grid_sz), args.objcofreq_file,lan_gran=lan_gran,
             device = device,options=args.seq_options,split=args.eval_split, attn_mode=args.attn_mode).to(device=device)
         if args.run_idx_file is not None:

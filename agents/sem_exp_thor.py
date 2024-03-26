@@ -29,14 +29,13 @@ from models.instructions_processed_LP.ALFRED_task_helper import get_list_of_high
 # *******************
 # *******************
 from models.segmentation.segmentation_helper import SemgnetationHelper
-#from models.depth.depth_helper import DepthHelper
 import utils.control_helper as CH
 
 import envs.utils.depth_utils as du
 import envs.utils.rotation_utils as ru
 
 # **************************
-from add_bycyw.code.auxiliary_calculate import all_satisfy,any_satisfy,clip_value,set_dict2value
+from utils.auxiliary_calculate import all_satisfy,any_satisfy,clip_value,set_dict2value
 import clip
 
 
@@ -120,12 +119,6 @@ class Sem_Exp_Env_Agent_Thor(ThorEnvCode):
         self.test_dict = read_test_dict(
             self.args.test, self.args.language_granularity, 'unseen' in self.args.eval_split)
 
-        #Segmentation
-        # if self.args.use_yolo:
-        #     from add_byme.code.segmentation_helper_yolo import SemgnetationHelper_YOLO
-        #     self.seg = SemgnetationHelper_YOLO(self)
-        # else:
-        #     self.seg = SemgnetationHelper(self)
         self.seg = SemgnetationHelper(self)
 
 

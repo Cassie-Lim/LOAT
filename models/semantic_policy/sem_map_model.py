@@ -445,22 +445,9 @@ class MLM(nn.Module):
         return scores_redux
 
 class SEQ_SEARCH(nn.Module):
-    '''
-    DONE 1. 将原本的queen改为list；2，前几步以探索环境为目的；去drawer里面找drewer?bug已修复
-    '''
-    # TODO 3.none搜索的时候还有问题，如何既考虑；3.探索一个地方总也探索不完；
-    # 4. drop search list 传进来，还没用
-    # 5. 目前那个共现关系还有点问题，应该去除掉那些数量比较少的，有可能是噪点
-    # 6. 如果在找柜子的过程中发现的目标,还是会先开柜子,再拿目标
-    '''
-    搜索是单线程，不用考虑多线程
-    '''
+
     def __init__(self, input_shape, output_shape, occur_fname,lan_gran, device,options=list(),split='tests_unseen',max_times=10, attn_mode="cap_avg_auto"):
-        '''
-        max_times:防止某些特殊情况，使得跳转目标一直无法得到满足
-        TODO 如果在一个大物体处寻找了max_times次小物体，强制跳转到下一个大物体寻找；如果在房间里寻找了10次大物体或者房间被探索完，请求replan
-        lan_gran:语言粒度
-        '''
+
         super(SEQ_SEARCH, self).__init__()
         # self.cap =  CAP(
         #     (240, 240), num_sem_categories=24, attn_mode="cap_avg_auto").to(device=device)
@@ -489,24 +476,17 @@ class SEQ_SEARCH(nn.Module):
         self.large2indx = {'ArmChair': 0, 'BathtubBasin': 1, 'Bed': 2, 'Cabinet': 3, 'Cart': 4, 'CoffeeMachine': 5, 'CoffeeTable': 6, 'CounterTop': 7, 'Desk': 8, 'DiningTable': 9, 'Drawer': 10,
                                'Dresser': 11, 'Fridge': 12, 'GarbageCan': 13, 'Microwave': 14, 'Ottoman': 15, 'Safe': 16, 'Shelf': 17, 'SideTable': 18, 'SinkBasin': 19, 'Sofa': 20, 'StoveBurner': 21, 'TVStand': 22, 'Toilet': 23}
         self.indx2large = {v: k for k, v in self.large2indx.items()}
-        # 传进来的地图经过重构后，也是按照这个顺序排列
 
         # self.go_quene = queue.Queue()
-        # 把quene的设置全都改为list
         self.go_list = list()
-        # 该list按照优先顺序存放要找到东西
         self.search_target = None #当前要找的东西
         self.go_target = None #当前为了找search_target要去的地方
         self.explored_large = None 
-        #这里和main函数里的explored不同，这里主要记录当前物体的探索程度，该变量在当前search target累加
         self.explored_all = None
-        # 这里记录所有的探索过的位置，之前探索的将随时间慢慢遗忘
         self.max_times = max_times
         self.times = 0
         self.none_times = 0
-        # 记录下主要探索的目标，和探索情况
         self.main_search_target = None #上一步搜索的目标
-        # self.mian_go_quene = None #上一步搜索的队列
         self.main_go_list = None #NOTE 变为list()?
         self.main_go_target = None 
         self.main_explore_large = None

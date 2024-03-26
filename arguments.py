@@ -399,7 +399,7 @@ def get_args():
     # 是否使用yolo模型
     parser.add_argument('--use_yolo', action='store_true', default=False)   
     #序列搜索的物体文件名
-    parser.add_argument('--objcofreq_file', type=str, default="add_bycyw/data/obj_occur_4threads/train_objcofreq.json")
+    parser.add_argument('--objcofreq_file', type=str, default="utils/obj_occur_4threads/train_objcofreq.json")
     parser.add_argument('--seq_options', type=str, nargs='+', default=[])
     # 是否使用lan_locs;使用什么粒度的语言信息：high, low, high_low; 
     # done: 之后要和参数里的lan_granularity统一起来;已经在代码里面修改，和上面的language_granularity一致

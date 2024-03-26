@@ -1,18 +1,13 @@
-# Prompter: Utilizing Large Language Model Prompting for a Data Efficient Embodied Instruction Following
+# Advancing Object Goal Navigation Through LLM-enhanced Object Affinities Transfer
 
-[Prompter: Utilizing Large Language Model Prompting for a Data Efficient Embodied Instruction Following](https://arxiv.org/abs/2211.03267)<br />
-Yuki Inoue, Hiroki Ohashi<br />
-Hitachi, Ltd.
+[Advancing Object Goal Navigation Through LLM-enhanced Object Affinities Transfer](https://arxiv.org/abs/2403.09971)<br />
+
 
 ![example](./miscellaneous/32_look_at_obj_in_light-Bowl-None-DeskLamp-308_trial_T20190907_133953_562557.gif)
 
 
 
 ## Setting up the environment
-
-We use Docker for setting up the environment. If you do not plan on using Docker or have other issues, please also refer to [FILM](https://github.com/soyeonm/FILM)'s setup procedure for setting up the environment. Our code is a fork of FILM from commit ID fa4aefda700a58b54d78a7e8e996f7c977cdd045.
-
-If you plan on not using Docker for setting environment, make sure that you are using **Python 3.6** and **AI2THOR ver. 2.1.0**.
 
 ### Basics
 
@@ -22,14 +17,18 @@ If you plan on not using Docker for setting environment, make sure that you are 
    git clone ~
    ```
 
-2. Create the docker image
+2. Create the conda environmnet
 
    ```bash
-   cd docker
-   docker build -t prompter .
+   conda env create --file=environments.yml
+   conda activate loat
+   # install habitat
+   git clone https://github.com/facebookresearch/habitat-lab.git
+   cd habitat-lab; git checkout tags/v0.1.5; 
+   pip install -e .
    ```
 
-3. [Additional preliminaries to use ALFRED scenes](https://github.com/soyeonm/FILM#additional-preliminaries-to-use-alfred-scenes)
+3. Additional preliminaries to use ALFRED scenes
 
    - You will need to download alfred scene data and process it using the [alfred repo]().
 
@@ -56,7 +55,7 @@ If you plan on not using Docker for setting environment, make sure that you are 
           └── ...
       ```
 
-4. [Download Trained models](https://github.com/soyeonm/FILM#download-trained-models)
+4. Download Trained models
 
    1. Download "Pretrained_Models_FILM" from [this link](https://drive.google.com/file/d/1mkypSblrc0U3k3kGcuPzVOaY1Rt9Lqpa/view?usp=sharing) kindly provided by FILM's author
 
@@ -113,7 +112,7 @@ We will introduce here what worked for us; please also refer to discussions in [
 
 
 ## Training / Evaluation
-
+> TODO: this part haven't be tidied yet
 Prompter is based solely on pretrained models. No additional training is performed.
 
 If you plan on retraining the pretrained models used in Prompter, please refer to [this link](https://github.com/soyeonm/FILM/tree/public#train-models-mask-rcnn--depth-bert-semantic-policy).

@@ -5,6 +5,7 @@
 .idea/
 .vscode/
 backup/
+debug_data/
 habitat-lab/
 models/models_ckpt/
 models/depth/depth_models/

@@ -108,10 +108,8 @@ def main():
         text += "_gtseg"
     if not args.use_learned_depth:
         text += '_gtdepth'
-    if args.sem_policy_type == 'seq':
-        text += '_seqsearch'
-    if args.drop_interaction_fail_loc:
-        text += "_dropFailLoc"
+    # if args.drop_interaction_fail_loc:
+    #     text += "_dropFailLoc"
     dn += text
     args.set_dn = dn
     args.dn = dn
@@ -1009,9 +1007,9 @@ def main():
                     goal_x = global_goals[e][0]
                     goal_y = global_goals[e][1]
                 goal_maps[e][goal_x, goal_y] = 1
-                print(f"use search results, the goal is {goal_x},{goal_y}")
+                # print(f"use search results, the goal is {goal_x},{goal_y}")
             else:
-                print('use really goal')
+                print('use real goal')
                 
         for e in range(num_scenes):
             if open4searches[e] is not None and not 'opened' in open4searches[e] and not goal_spotted_s[e] and go_target==open4searches[e]:

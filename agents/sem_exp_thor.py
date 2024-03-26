@@ -131,7 +131,6 @@ class Sem_Exp_Env_Agent_Thor(ThorEnvCode):
 
         self.do_log = self.args.debug_local
 
-        print("current version is v5")
 
         #Depth
         # Changed by Trisoil
@@ -1646,23 +1645,14 @@ class Sem_Exp_Env_Agent_Thor(ThorEnvCode):
             if self.curr_loc_grid[0] == loc[0] and self.curr_loc_grid[1] == loc[1]:
                 in_fail_loc = True
         execute_interaction = interactable & (not during_lookaround) & (not self.first_goal) and not in_fail_loc #NOTE 这里条件已经改变
-        # **************
-        # NOTE 开微波炉的时候这里不可交互，interactable为false，结果就导致请求下一个目标
-        # ********** add by me ************
-        # if target_xyz is not None:
-            # print(f"the target_xyz is {target_xyz}")
-        # print(f"the target_coord is {target_coord}")
-        # *******************
 
-        # ************
-        if interaction_mask is None:
-            print("the interaction mask is None")
-        
-        elif not interactable:
-            print("interaction mask is not None, but can't interact")
-        else:
-            print('interaction mask is not None, and interactable')
-        # *****************
+
+        # if interaction_mask is None:
+        #     print("the interaction mask is None")
+        # elif not interactable:
+        #     print("interaction mask is not None, but can't interact")
+        # else:
+        #     print('interaction mask is not None, and interactable')
 
         # if sliced mask is available and now want to pick up the sliced object,
         # do not interact with object along the path
@@ -1680,10 +1670,6 @@ class Sem_Exp_Env_Agent_Thor(ThorEnvCode):
         if goal_spotted:
             print("found goal")
         # **************************
-
-        # 以上都是在判断，计算一些变量，后续开始根据计算的变量选择行动
-        # **************
-        # 计算是否需要新角度
         if self.args.change_altitude:
             new_horizon_angle = self.new_angel(goal_spotted,explored_map)
         else:
@@ -1692,7 +1678,6 @@ class Sem_Exp_Env_Agent_Thor(ThorEnvCode):
 
         do_move = False
         is_centering = len(self.centering_actions) > 0
-        # NOTE self.centering_actions似乎没有被正确地重置
         if is_centering:
             self.print_log("centering_history", self.centering_history)
 
@@ -1725,27 +1710,14 @@ class Sem_Exp_Env_Agent_Thor(ThorEnvCode):
 
             obs, rew, done, info, goal_success, err, abort_centering, action = self.interactionProcess(
                 interaction_fn, needs_centering, planner_inputs, interaction_mask)
-            # 只有interact_ok才会执行interactionProcess，才会执行centering，所以，如果一开始距离不够的话，将不会进入交互，只能等搜索模块给出一个好的目标点
-            # # ********* add by me *************
-            # print("interaction done")
-            # # ***************
 
         elif new_horizon_angle is not None:
-            # self.num_newgoal_curhorizon[self.camera_horizon] = 0
-            # 这里不用实时更改了
-            # 更换俯仰角的优先度比较低
             action = f"Angle_{new_horizon_angle}"
             self.print_log(f"change horizon angle to {new_horizon_angle}")
-            # 后面代码会执行这个动作，做后续的处理
 
         else:
             do_move = True
-            # *****************add by me *********
-            # print("just move")
-            # **************
 
-        # centering，interaction后还可以domove，不，else
-        # 更改垂直视角可能不可以，在getnextaction里面修改
         if do_move or abort_centering:
             self.force_move = False
             goal_xyz = target_xyz if goal_spotted else None
@@ -1754,10 +1726,9 @@ class Sem_Exp_Env_Agent_Thor(ThorEnvCode):
                              if (interaction == "OpenObject") else 0) #NOTE 只有开东西的时候有偏执，其它都没有
             action, next_goal, self.reached_goal = self.getNextAction(
                 planner_inputs, during_lookaround, target_offset, goal_xyz, force_slice_pickup)
-                # 这里target_xyz不用？
             # ********************
             if self.reached_goal:
-                self.first_goal = False #已经到达目标了，现在可以不用先到达目标了
+                self.first_goal = False 
             # **********************
 
             # ******************
@@ -1769,9 +1740,6 @@ class Sem_Exp_Env_Agent_Thor(ThorEnvCode):
 
         if action is not None:
             obs, rew, done, info, _, err, goal_success = self.execAction(action)
-            # # *********** add by me **********
-            # print(f"the action is {action}")
-            # # ****************
 
         will_center = len(self.centering_actions) > 0
         if (not is_centering) and (not will_center):
@@ -1797,12 +1765,7 @@ class Sem_Exp_Env_Agent_Thor(ThorEnvCode):
 
         # request next goal when an interaction succeeds
         next_goal |= goal_success and not self.open_object
-        # 如果是开了东西，除非导航模块请求下一个目标，否则，不请求下一个目标
-
         # next_goal = next_goal and not self.open_object
-        #在打开的东西没有被关上之前，都不请求下一个目标
-        #这样写的话有可能出现打开东西了，但是一直交互失败，drop loc已经很多了，fmm一直给不了目标，机器人处于空转状态
-        # debug用
         if self.open_object:
             print("some object opened and not be closed")
             print(f"next goal is {next_goal}")
@@ -1812,22 +1775,11 @@ class Sem_Exp_Env_Agent_Thor(ThorEnvCode):
 
 
         self.rotate_aftersidestep = sdroate_direction
-        # next_step_dict = {
-        #     'keep_consecutive': keep_consecutive, 'view_angle': self.camera_horizon,
-        #     'picked_up': self.picked_up, 'errs': self.errs, 'steps_taken': self.steps_taken,
-        #     'broken_grid':self.broken_grid,
-        #     'actseq':{(self.args.from_idx + self.scene_pointer* self.args.num_processes + self.rank, self.traj_data['task_id']): self.actions[:1000]},
-        #     'logs':self.logs,  'current_goal_sliced':self.cur_goal_sliced, 'next_goal': next_goal,
-        #     'delete_lamp': delete_lamp, 'fails_cur': self.fails_cur}
-
-        # ******************
-        #  *********************
         if self.args.run_idx_file is None:
             episode_no = self.args.from_idx + self.scene_pointer* self.args.num_processes + self.rank
         else:
             idx = json.load(open(self.args.run_idx_file, 'r'))
             episode_no = idx[self.args.from_idx+self.scene_pointer* self.args.num_processes + self.rank]
-            # 注意修改到这里会不会导致程序非法结束？
             print(f"episode number is {episode_no}")
         # ********************
         next_step_dict = {
@@ -1841,12 +1793,11 @@ class Sem_Exp_Env_Agent_Thor(ThorEnvCode):
 
         if err != "":
             self.print_log(f"step: {self.steps_taken} err is {err}")
-            # 这个self.errs添加了，但是没有任何赋值，它的父类也没有赋值
             # *******************
             self.errs.append(err)
             # *******************
 
-        self.last_err = err #last err赋值了，但是没用
+        self.last_err = err 
         self.info = info
 
         list_of_actions = planner_inputs['list_of_actions']
@@ -1880,11 +1831,9 @@ class Sem_Exp_Env_Agent_Thor(ThorEnvCode):
                     [r, c] = pu.threshold_poses([int(y + dy), int(x + dx)], self.collision_map.shape)
                     self.collision_map[r, c] = 1
             
-            # 如果发生碰撞，不仅在coliision_map上进行标记，还增大explored area的缩减区域
             # *********************
             self.explored_area_reduce_size += 2
             self.explored_area_reduce_size = clip_value(self.explored_area_reduce_size, 1, 11)
-            # 如果当前视角不是45度，执行一步动作，更改为45度
             if self.camera_horizon != 45:
                 action = "Angle_45"
                 obs, rew, done, info, _, err, goal_success = self.execAction(action)
@@ -1912,11 +1861,9 @@ class Sem_Exp_Env_Agent_Thor(ThorEnvCode):
                     dx, dy = rmat @ delta
                     [r, c] = pu.threshold_poses([int(y + dy), int(x + dx)], self.collision_map.shape)
                     self.collision_map[r, c] = 1
-            # 如果发生碰撞，不仅在coliision_map上进行标记，还增大explored area的缩减区域
             # *********************
             self.explored_area_reduce_size += 2
             self.explored_area_reduce_size = clip_value(self.explored_area_reduce_size, 1, 11)
-            # 如果当前视角不是45度，执行一步动作，更改为45度
             if self.camera_horizon != 45:
                 action = "Angle_45"
                 obs, rew, done, info, _, err, goal_success = self.execAction(action)
@@ -2012,7 +1959,6 @@ class Sem_Exp_Env_Agent_Thor(ThorEnvCode):
             viz[max(0, goal_coord[0]-2):min(h-1, goal_coord[0]+3), max(0, goal_coord[1]-2):min(w-1, goal_coord[1]+3), :] = [255, 0, 0]
             viz[max(0, new_goal[0]-2):min(h-1, new_goal[0]+3), max(0, new_goal[1]-2):min(w-1, new_goal[1]+3), :] = [0, 0, 255]
             # ***********
-            # 添加当前位置的标记
             viz[max(0, start[0]-2):min(h-1, start[0]+3), max(0, start[1]-2):min(w-1, start[1]+3), :] = [0, 255, 0]
             # ***********
             cv2.imwrite(self.picture_folder_name +"fmm_dist/"+ "fmm_dist_" + str(self.steps_taken) + ".png", viz)
@@ -2154,7 +2100,6 @@ class Sem_Exp_Env_Agent_Thor(ThorEnvCode):
             # target_mask = sem_seg_pred[:,:,goal_idx]
             target_mask = skimage.morphology.dilation(target_mask,skimage.morphology.square(10))
             if cal_optical_flow:
-                # 计算光流
                 hsv = np.zeros_like(self.prev_rgb)
                 prvs = cv2.cvtColor(self.prev_rgb,cv2.COLOR_BGR2GRAY)
                 curr = cv2.cvtColor(self.event.frame,cv2.COLOR_BGR2GRAY)
@@ -2227,8 +2172,6 @@ class Sem_Exp_Env_Agent_Thor(ThorEnvCode):
         m2 = np.logical_and(no_cat_mask, map_mask)
         sem_map[m2] = 1
 
-        # sem_map[vis_mask] = 3 #可视化之前走过的位置
-
         curr_mask = np.zeros(vis_mask.shape)
         selem = skimage.morphology.disk(2)
         curr_mask[start[0], start[1]] = 1
@@ -2243,11 +2186,6 @@ class Sem_Exp_Env_Agent_Thor(ThorEnvCode):
                 goal, selem) != True
             goal_mask = goal_mat == 1
             sem_map[goal_mask] = 4
-
-        # 原本就注释了的
-        #self.print_log(sem_map.shape, sem_map.min(), sem_map.max())
-        #self.print_log(vis_mask.shape)
-        #sem_map = self.compress_sem_map(sem_map)
 
         #color_palette = d3_40_colors_rgb.flatten()
         color_palette2 = [1.0, 1.0, 1.0,
@@ -2316,26 +2254,6 @@ class Sem_Exp_Env_Agent_Thor(ThorEnvCode):
         goal_instr = self.traj_data['turk_annotations']['anns'][self.r_idx]['task_desc']
         sliced = get_arguments(self.traj_data)[-1]
         
-        # # log success/fails
-        # log_entry = {'trial': self.traj_data['task_id'],
-        #              #'scene_num': self.traj_data['scene']['scene_num'],
-        #              'type': self.traj_data['task_type'],
-        #              'repeat_idx': int(self.r_idx),
-        #              'goal_instr': goal_instr,
-        #              'completed_goal_conditions': int(pcs[0]),
-        #              'total_goal_conditions': int(pcs[1]),
-        #              'goal_condition_success': float(goal_condition_success_rate),
-        #              'success_spl': float(s_spl),
-        #              'path_len_weighted_success_spl': float(plw_s_spl),
-        #              'goal_condition_spl': float(pc_spl),
-        #              'path_len_weighted_goal_condition_spl': float(plw_pc_spl),
-        #              'path_len_weight': int(path_len_weight),
-        #              'sliced':sliced,
-        #              'episode_no':  self.args.from_idx + self.scene_pointer* self.args.num_processes + self.rank,
-        #              'steps_taken': self.steps_taken}
-        #              #'reward': float(reward)}
-
-        #  ***************************
         if self.args.run_idx_file is None:
             episode_no = self.args.from_idx + self.scene_pointer* self.args.num_processes + self.rank
         else:
@@ -2379,28 +2297,6 @@ class Sem_Exp_Env_Agent_Thor(ThorEnvCode):
         similar_words = [word for _, word in sorted(zip(similarity_scores, scene_obj_list), reverse=True)[:1]]
         return similar_words[0]
 
-    # def replan_subtask(self, planner_inputs):
-    #     obj_num = len(self.goal_idx2cat)
-    #     scene_obj_list = []
-    #     sem_map_pred = planner_inputs['sem_map_pred']
-    #     for index_obj in range(obj_num-1):
-    #         if index_obj in sem_map_pred:
-    #             scene_obj_list.append(self.goal_idx2cat[index_obj])
-
-    #     target_num = list(planner_inputs['list_of_actions'][planner_inputs['list_of_actions_pointer']])[0]
-        
-    #     if (target_num in ["Cup", "Mug"]) and (("Cup" not in scene_obj_list) and ("Mug" not in scene_obj_list)):
-    #         return scene_obj_list, planner_inputs
-        
-    #     if (target_num not in scene_obj_list) and (target_num in constants.map_save_large_objects or target_num in ["Mug", "Cup"]):
-    #         similar_words = self.calculate_similarity(target_num, scene_obj_list)
-
-    #         temp = list(planner_inputs['list_of_actions'][planner_inputs['list_of_actions_pointer']])
-    #         temp[0] = similar_words
-    #         planner_inputs['list_of_actions'][planner_inputs['list_of_actions_pointer']] = tuple(temp)
-    #         self.info = self.reset_goal(True, temp[0], None)
-    #     return scene_obj_list, planner_inputs
-    
     def replan_subtask(self, planner_inputs):
         obj_num = len(self.goal_idx2cat)
         scene_obj_list = []
@@ -2458,145 +2354,6 @@ class Sem_Exp_Env_Agent_Thor(ThorEnvCode):
                 return scene_obj_list, planner_inputs,False
         return scene_obj_list, planner_inputs,True
 
-    # def replan_subtask(self, planner_inputs):
-    #     obj_num = len(self.goal_idx2cat)
-    #     scene_obj_list = []
-    #     sem_map_pred = planner_inputs['sem_map_pred']
-    #     for index_obj in range(obj_num-1):
-    #         if index_obj in sem_map_pred:
-    #             scene_obj_list.append(self.goal_idx2cat[index_obj])
-
-    #     target_num = list(planner_inputs['list_of_actions'][planner_inputs['list_of_actions_pointer']])[0]
-    #     replace_name = None
-    #     if target_num not in scene_obj_list:
-    #         if target_num == "Glassbottle"  and  "Cup" in scene_obj_list:
-
-
-    #             replace_name = "Cup"
-
-
-
-
-
-
-    #         if (target_num in sit_object) and any(element in scene_obj_list for element in sit_object):
-    #             replace_name = self.calculate_similarity(target_num, list(set(sit_object) & set(scene_obj_list)))
-
-
-
-
-
-
-
-
-    #         elif (target_num in cup_object) and any(element in scene_obj_list for element in cup_object):
-    #             replace_name = self.calculate_similarity(target_num, list(set(cup_object) & set(scene_obj_list)))
-
-
-
-
-
-
-
-
-    #         elif (target_num in table_object) and any(element in scene_obj_list for element in table_object):
-    #             replace_name = self.calculate_similarity(target_num, list(set(table_object) & set(scene_obj_list)))
-
-
-
-
-
-
-
-
-    #         elif (target_num in bottle_object) and any(element in scene_obj_list for element in bottle_object):
-    #             replace_name = self.calculate_similarity(target_num, list(set(bottle_object) & set(scene_obj_list)))
-
-
-
-
-
-
-
-
-    #         elif (target_num in lamp_object) and any(element in scene_obj_list for element in lamp_object):
-    #             replace_name = self.calculate_similarity(target_num, list(set(lamp_object) & set(scene_obj_list)))
-
-
-
-
-
-
-
-
-    #         elif (target_num in drawer_object) and any(element in scene_obj_list for element in drawer_object):
-    #             replace_name = self.calculate_similarity(target_num, list(set(drawer_object) & set(scene_obj_list)))
-
-
-
-
-
-
-
-
-    #         else:
-    #             return planner_inputs,False
-
-    #         planner_inputs['list_of_actions'],has_replan=self.reset_plan(planner_inputs['list_of_actions'],replace_name,planner_inputs['list_of_actions_pointer'],'replace_target')
-    #         if has_replan:
-    #             self.info = self.reset_goal(True, replace_name, planner_inputs['consecutive_interaction'])
-    #     return planner_inputs,has_replan
-    #     # 最后一个值标志着是否真正replan了
-
-
-    # def arrivedAtSubGoal(self, planner_inputs, goal_free_and_not_shifted):
-    #     # Construct the scene_obj_list to record the objects in the scene
-    #     print('当前子目标为：', self.goal_name)
-
-    #     if self.replan == True:
-    #         if self.SubTask_pointer != planner_inputs['list_of_actions_pointer']:
-    #             self.SubTask_pointer = planner_inputs['list_of_actions_pointer']
-    #             self.SubTask_fail_num = 0
-    #         else:
-    #             self.SubTask_fail_num += 1
-    #             if self.SubTask_fail_num > 5:
-    #                 # 执行Replan
-    #                 scene_obj_list, planner_inputs = self.replan_subtask(planner_inputs)
-    #                 self.SubTask_fail_num  = 0
-            
-
-    #     self.print_log("Arrived at subgoal")
-
-    #     if goal_free_and_not_shifted or ("lookaroundAtSubgoal" in self.args.mlm_options):
-    #         self.print_log("Looking in all 4 directions")
-    #         return ["RotateLeft_90"] * 3 + ["Angle_0"] + ["RotateLeft_90"] * 3 + ["Angle_45", "Done"], planner_inputs
-
-    #     self.print_log("Looking only in 1 direction")
-    #     actions = list()
-
-    #     cur_hor = np.round(self.camera_horizon, 4)
-    #     if abs(cur_hor-45) > 5:
-    #         actions.append("Angle_45")
-
-    #     # figure out which direction the agent must turn to
-    #     delta_angle = self.getGoalDirection(planner_inputs)
-    #     if delta_angle == 0:  # no need to turn
-    #         pass
-    #     elif delta_angle == 90:
-    #         actions += ["RotateLeft_90"]
-    #     elif delta_angle == 270:
-    #         actions += ["RotateRight_90"]
-    #     elif delta_angle == 180:
-    #         # rotate left twice to do a 180 degrees turn
-    #         actions += ["RotateLeft_90", "RotateLeft_90"]
-
-    #     # the agent is looking at the correct direction, so look up and down
-    #     # NOTE: last item in actions needs to be "Done", since that is how getNextAction() knows
-    #     # if search sequence failed
-    #     actions += ["LookUp_0", "Angle_0", "Angle_45", "Done"]
-
-    #     return actions, planner_inputs
-    # *************************************
 
     # ***********************
     def reset_plan(self,second_object,caution_pointers,reset_type='open4search'):
@@ -2608,15 +2365,5 @@ class Sem_Exp_Env_Agent_Thor(ThorEnvCode):
         self.caution_pointers = caution_pointers
         # if reset_type=='open4search':
         if reset_type=='open4search' and not self.open_object:
-            # 如果已经打开了东西，则不需要先到达目标
             self.first_goal = True #先到目标那里
-        # TODO 还需要reset goal
-    # *********************
-
-    # def openobject(self,object):
-    #     '''
-    #     一个单独的功能，openobject,调用该函数时，一般已经到达目标点，不需要搜索，理论上，应该不怎么需要main函数，主要是顺序执行：centering, open, look, if not found: close, else: execute origin cation, close
-    #     像其它函数一样，只决定应该做什么动作，具体动作在plan_act_里面执行
-    #     '''
-    #     # sem_exp_thor能实现这样
-    # 感觉还是太困难了，先按照之前的思路去做
+ 

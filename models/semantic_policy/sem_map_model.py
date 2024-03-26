@@ -19,7 +19,7 @@ import skimage.morphology
 import cv2
 import pickle
 from language_parse.utils import * 
-from semantic_policy.get_search_loc import *
+from models.semantic_policy.get_search_loc import *
 import re
 
 import torch.nn.functional as F

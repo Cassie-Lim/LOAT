@@ -1,4 +1,3 @@
-# 序列搜索，使用high level language作为辅助
 FROM_IDX=$1
 TO_IDX=$2
 SPLIT=$3
@@ -14,8 +13,6 @@ ATTN_MODE=${10}
 # example usage:
 # CUDA_VISIBLE_DEVICES=1 improve_search_v5/scripts/inference_seq_lan_replan.sh 0 300 tests_unseen seq "aggregate_sum sem_search_all spatial_norm temperature_annealing new_obstacle_fn no_slice_replay" "lan_locs" high_low 0 21.0
 
-
-# python improve_search_v5/main.py \
 python main.py \
 -n1 \
 --max_episode_length 1000 \
@@ -47,7 +44,7 @@ python main.py \
 --centering_strategy local_adjustment \
 --target_offset_interaction 0.5 \
 --obstacle_selem 9 \
---result_file improve_search_v5/results_cap/ \
+--result_file results/ \
 --x_display ${X_DISPLAY} \
 --drop_interaction_fail_loc \
 --use_replan \

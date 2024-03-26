@@ -131,7 +131,7 @@ def getCandCoords(pt, distance, map_shape, kernel_shape=cv2.MORPH_CROSS):
     return np.where(candidate_map)
 
 
-def findReachablePose(goal, dist_thresh, step_size, map_shape, dist_matrix, search_shape=cv2.MORPH_CROSS):
+def findReachablePose(goal, dist_thresh, step_size, map_shape, dist_matrix, goal_drop_pose,search_shape=cv2.MORPH_CROSS):
     for displacement in range(0, 30 // step_size):
         distances, cand_indices = list(), list()
         cand_ys, cand_xs = getCandCoords(goal, displacement, map_shape, search_shape)
@@ -144,7 +144,11 @@ def findReachablePose(goal, dist_thresh, step_size, map_shape, dist_matrix, sear
         min_indx = np.argmin(distances)
         min_dist = distances[min_indx]
         if (min_dist != np.inf) and ((dist_thresh is None ) or (min_dist < dist_thresh)):
-            return indx2pose(cand_indices[min_indx], map_shape)
+            # ************
+            new_pose = indx2pose(cand_indices[min_indx], map_shape)
+            if new_pose not in goal_drop_pose:
+            # ***********
+                return new_pose
 
     return None
 
@@ -153,17 +157,17 @@ def isReachable(end_indx, dist_matrix):
     return dist_matrix[end_indx] != np.inf
 
 
-def getReachableGoalPose(goal, step_size, map_shape, dist_matrix):
+def getReachableGoalPose(goal, step_size, map_shape, dist_matrix,goal_drop_pose):
     dist_thresh = 200 // step_size
     # dist_thresh = 125 // step_size
     goal_coordinate = findReachablePose(
-        goal, dist_thresh, step_size, map_shape, dist_matrix,
+        goal, dist_thresh, step_size, map_shape, dist_matrix,goal_drop_pose,
         search_shape=cv2.MORPH_CROSS)
 
     # if searching in cross shape failed, try circular shape
     if goal_coordinate is None:
         goal_coordinate = findReachablePose(
-            goal, dist_thresh, step_size, map_shape, dist_matrix,
+            goal, dist_thresh, step_size, map_shape, dist_matrix,goal_drop_pose,
             search_shape=cv2.MORPH_ELLIPSE)
 
     # if candidate search failed, ask for a new goal
@@ -194,7 +198,6 @@ def nextStep(predecessors, start_indx, goal_indx, map_shape, step_size):
     if angle_diff == 270:
         return "RotateRight_90"
 
-
 def shiftGoal(old_goal, new_goal, traversible, target_offset, step_size, measure_offset_from_edge):
     # shift the selected coordinate by target_offset, so that the agent
     # is specific distance away from the target
@@ -222,7 +225,7 @@ def shiftGoal(old_goal, new_goal, traversible, target_offset, step_size, measure
     return convert2connectivityPose(shifted_goal, step_size)
 
 
-def planNextMove(traversible, step_size, start, goal, target_offset, measure_offset_from_edge):
+def planNextMove(traversible, step_size, start, goal, target_offset, measure_offset_from_edge,goal_drop_loc=None):
     # calculate the connectivity graph
     connectivity = map2connectivity(traversible, step_size)
 
@@ -234,6 +237,13 @@ def planNextMove(traversible, step_size, start, goal, target_offset, measure_off
 
     start_pose = convert2connectivityPose(start, step_size)
     goal_pose = convert2connectivityPose(goal, step_size)
+
+    goal_drop_pose = []
+    for goal_loc in goal_drop_loc:
+        drop_pose = convert2connectivityPose(goal_loc, step_size)
+        for orientation in range(0, 360, 90):
+            goal_drop_pose.append((drop_pose[0],drop_pose[1],orientation))
+
 
     map_shape = [(dim // step_size + 1) for dim in traversible.shape[:2]]
     start_indx = pose2indx(start_pose[0], start_pose[1], start_pose[2], map_shape)
@@ -256,7 +266,7 @@ def planNextMove(traversible, step_size, start, goal, target_offset, measure_off
     else:
         # search for a goal coordinate that is reachable
         reachable_goal_pose = getReachableGoalPose(
-            pose2coord(goal_pose), step_size, map_shape, dist_matrix)
+            pose2coord(goal_pose), step_size, map_shape, dist_matrix,goal_drop_pose)
         # self.print_log(f"goal shifted from {ori_goal_coord[1]},{ori_goal_coord[0]} to {goal_coordinate[1]},{goal_coordinate[0]} to avoid obstacles")
 
         if reachable_goal_pose is None:
@@ -266,16 +276,17 @@ def planNextMove(traversible, step_size, start, goal, target_offset, measure_off
         new_goal_pose = shiftGoal(
             pose2coord(goal_pose), pose2coord(reachable_goal_pose), traversible,
             target_offset, step_size, measure_offset_from_edge)
+        
+        # # *****************
+        # print(f"start_pose is {start_pose}")
+        # print(f"goal_pose is {goal_pose},reachable_goal_pose is {reachable_goal_pose}")
+        # print(f"new_goal_pose(shifted) is {new_goal_pose}")
+        # # *****************
 
         goal_not_shifted = (pose2coord(goal_pose) == pose2coord(new_goal_pose))
         goal_free = traversible[goal[0], goal[1]]
         goal_free_and_not_shifted = goal_free and goal_not_shifted
         arrived_at_goal = ((pose2coord(start_pose) == pose2coord(new_goal_pose))) or (new_goal_pose is None)
-
-        # ***************
-        if arrived_at_goal:
-            print("debug")
-        # ************
 
         if arrived_at_goal:
             return "LookUp_0", start, True, next_goal, goal_free_and_not_shifted

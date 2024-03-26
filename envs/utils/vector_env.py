@@ -64,6 +64,10 @@ LOAD_INITIAL_COMMAND = "load_initial_scene"
 LOAD_NEXT_COMMAND = "load_next_scene"
 EVALUATE_COMMAND = "evaluate"
 
+# *********************
+RESET_PLAN_COMMAND = "reset_plan"
+# *****************
+
 
 def _make_env_fn(
     config: Config, dataset: Optional[habitat.Dataset] = None, rank: int = 0
@@ -214,6 +218,11 @@ class VectorEnv:
                     # env.reset_goal(data)
                     infos = env.reset_goal(data[0], data[1], data[2])
                     connection_write_fn(infos)
+                
+                # **********************
+                elif command == RESET_PLAN_COMMAND:
+                    env.reset_plan(data[0],data[1],data[2])
+                # *************************
 
                 elif command == DECOMPRESS_MASK_COMMAND:
                     mask = env.decompress_mask(data)
@@ -265,12 +274,13 @@ class VectorEnv:
                     connection_write_fn(env.current_episode)
 
                 elif command == PLAN_ACT_AND_PREPROCESS:
-                    observations, reward, done, info, gs, nsd = \
+                    observations, reward, done, info, gs, nsd, planner_inputs = \
                         env.plan_act_and_preprocess(data[0], data[1])
                     # if auto_reset_done and done:
                     #    observations, info = env.reset()
                     connection_write_fn(
-                        (observations, reward, done, info, gs, nsd))
+                        (observations, reward, done, info, gs, nsd, planner_inputs))
+                # ******************
 
                 elif command == TO_THOR_API_EXEC_COMMAND:
                     observations, reward, done, info, event, action = \
@@ -434,6 +444,15 @@ class VectorEnv:
 
         self._is_waiting = False
         return results
+    
+    #************************
+    def reset_plan(self,second_objects,caution_pointer_s,reset_type_s):
+        self._is_waiting = True
+        for e, write_fn in enumerate(self._connection_write_fns):
+            data_list = [second_objects[e], caution_pointer_s[e],reset_type_s[e]]
+            write_fn((RESET_PLAN_COMMAND, data_list))
+        self._is_waiting = False
+    # **********************
 
     def decompress_mask(self, mask):
         self._is_waiting = True
@@ -692,11 +711,10 @@ class VectorEnv:
         results = []
         for read_fn in self._connection_read_fns:
             results.append(read_fn())
-        #import pickle
-        #pickle.dump(results, open("pap_results.p", "wb"))
-        obs, rews, dones, infos, gss, nsds = zip(*results)
+        obs, rews, dones, infos, gss, nsds, planner_inputs = zip(*results)
         self._is_waiting = False
-        return np.stack(obs), np.stack(rews), np.stack(dones), infos, gss, nsds
+        return np.stack(obs), np.stack(rews), np.stack(dones), infos, gss, nsds, planner_inputs
+        # ***********************
 
     def to_thor_api_exec(self, action, object_id, smooth_nav):
         self._assert_not_closed()

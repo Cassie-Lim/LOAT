@@ -60,8 +60,7 @@ class SemgnetationHelper:
 			self.small_objects2idx = {k:i for i, k in enumerate(self.small)}
 			self.small_idx2small_object = {v:k for k,v in self.small_objects2idx.items()}
 
-			# self.yolo_model = YOLO("/home/tmn/Desktop/cyw/prompter-alfred-YOLO-no_replan_v1/best.pt").to(self.sem_seg_gpu)
-			self.yolo_model = YOLO("models_new/best.pt").to(self.sem_seg_gpu)
+			self.yolo_model = YOLO("models/models_ckpt/best_yolo.pt").to(self.sem_seg_gpu)
 
 	def update_agent(self, agent):
 		self.agent = agent

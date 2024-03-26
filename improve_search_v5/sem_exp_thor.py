@@ -135,10 +135,10 @@ class Sem_Exp_Env_Agent_Thor(ThorEnvCode):
 
         #Depth
         # Changed by Trisoil
-        self.depth_img_processor = AutoImageProcessor.from_pretrained('models_new/dpt-dinov2-base-nyu')
+        self.depth_img_processor = AutoImageProcessor.from_pretrained('models/models_ckpt/dpt-dinov2-base-nyu')
         
-        self.dino_depth = DPTForDepthEstimation.from_pretrained('models_new/dpt-dinov2-base-nyu')
-        self.dino_depth.load_state_dict(torch.load('models_new/base_epoch_36.pth'))
+        self.dino_depth = DPTForDepthEstimation.from_pretrained('models/models_ckpt/dpt-dinov2-base-nyu')
+        self.dino_depth.load_state_dict(torch.load('models/models_ckpt/base_epoch_36.pth'))
         self.dino_depth.cuda(self.args.depth_gpu)
         # self.dino_depth =  torch.nn.DataParallel(self.dino_depth, device_ids=[0, 1, 2, 3])
         print('Finish loading dino depth model')

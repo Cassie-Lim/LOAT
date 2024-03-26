@@ -10,13 +10,13 @@ import pickle
 # from models.semantic_policy.sem_map_model import UNetMulti, MLM
 # **************
 # 使用自己的搜索
-from improve_search_v4.semantic_policy.sem_map_model import UNetMulti,MLM,SEQ_SEARCH
+from semantic_policy.sem_map_model import UNetMulti,MLM,SEQ_SEARCH
 # ***********
 import alfred_utils.gen.constants as constants
 from models.instructions_processed_LP.ALFRED_task_helper import determine_consecutive_interx,get_newplan
 # from models.sem_mapping import Semantic_Mapping
 # *****************
-from improve_search_v4.sem_mapping import Semantic_Mapping
+from sem_mapping import Semantic_Mapping
 # 使用自己的语义映射，语义图构建
 # ***************
 # import envs.utils.pose as pu

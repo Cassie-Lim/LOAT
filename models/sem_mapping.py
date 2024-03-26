@@ -11,10 +11,6 @@ import envs.utils.depth_utils as du
 import cv2
 import time
 
-'''
-已将minz改大
-'''
-
 class Semantic_Mapping(nn.Module):
 
     """
@@ -62,10 +58,6 @@ class Semantic_Mapping(nn.Module):
                                self.screen_h//self.du_scale * self.screen_w//self.du_scale
                                ).float().to(self.device)
         
-        # *************
-        # debug用
-        # self.step = 0
-        # ****************
 
     def set_view_angles(self, view_angles):
         self.view_angles = [-view_angle for view_angle in view_angles]
@@ -102,7 +94,8 @@ class Semantic_Mapping(nn.Module):
     def forward(self, obs, pose_obs, maps_last, poses_last, build_maps=True, no_update=False):
         # obs's channels are as follows:
         # 1-3: RGB
-        # 4: Depth
+        # 4: Depth 
+        # 5-end: categories
         bs, c, h, w = obs.size()
         depth = obs[:, 3, :, :]
 
@@ -116,12 +109,12 @@ class Semantic_Mapping(nn.Module):
 
         agent_view_centered_t = du.transform_pose_t(
             agent_view_t, self.shift_loc, self.device)
+            # current_pose            : camera position (x, y, theta (radians))
 
         debug = False
-
-        # *****************
-        # debug = True # NOTE 调试用，会极大地降低运行效率
-        # *****************
+        # # ******************
+        # debug = True
+        # # *********************
         if debug:
             self.plot3D(point_cloud_t[0].detach().cpu().numpy(), "point_cloud.html")
             self.plot3D(agent_view_t[0].detach().cpu().numpy(), "agent_view.html")
@@ -129,7 +122,6 @@ class Semantic_Mapping(nn.Module):
             cv2.imwrite("bw.png", obs[0, 0, :, :].detach().cpu().numpy())
             cv2.imwrite("depth.png", obs[0, 3, :, :].detach().cpu().numpy())
             # ****************
-            # 把数据保存下来，之后可视化
             import pickle
             with open("debug_data/point_cloud"+"/"+"point_cloud.pkl",'wb') as f:   
                 pickle.dump(point_cloud_t[0].detach().cpu().numpy(),f)
@@ -143,15 +135,6 @@ class Semantic_Mapping(nn.Module):
             for cat_id in range(4, mask_map.shape[0]):
                 mask_map[cat_id, :, :], did_remove = self.removeMaskNearGround(
                     mask_map[cat_id, :, :], height_map, reliable_map, height_thresh)
-                # # NOTE 原本代码这里注释掉了
-                # if did_remove:
-                #     print(f"removed {cat_id - 4}")
-        
-        # # ***************
-        # self.step += 1
-        # cv2.imwrite(f"debug_image/image/height_info_{self.step}.png",height_info[0])
-        # cv2.imwrite(f"debug_image/image/reliable_{self.step}.png",reliable[0]*255)
-        # # ****************
 
         max_h = self.max_height
         min_h = self.min_height
@@ -177,11 +160,7 @@ class Semantic_Mapping(nn.Module):
             self.init_grid*0., self.feat, XYZ_cm_std).transpose(2, 3)
 
         # min_z = int(5/z_resolution - min_h)
-        # *************
-        # debug用，难道是地毯太高了？确实！ NOTE 修改了阈值，测试一下
         min_z = int(10/z_resolution - min_h)
-        # print(f"min_z is {min_z}")
-        # *************
         max_z = int((self.agent_height + 1 + 50)/z_resolution - min_h)
 
         agent_height_proj = voxels[..., min_z:max_z].sum(4)
@@ -194,10 +173,6 @@ class Semantic_Mapping(nn.Module):
         fp_map_pred = torch.clamp(fp_map_pred, min=0.0, max=1.0)
         fp_exp_pred = torch.clamp(fp_exp_pred, min=0.0, max=1.0)
 
-        # # *****************
-        # cv2.imwrite(f"debug_image/image/fp_map_pred_{self.step}.png",fp_map_pred[0][0].detach().cpu().numpy()*255)
-        # cv2.imwrite(f"debug_image/image/fp_exp_pred_{self.step}.png",fp_exp_pred[0][0].detach().cpu().numpy()*255)
-        # # *****************
 
         if self.no_straight_obs:
             for vi, va in enumerate(self.view_angles):
@@ -259,12 +234,10 @@ class Semantic_Mapping(nn.Module):
                                       self.device)
 
         rotated = F.grid_sample(agent_view, rot_mat, align_corners=True)
-        translated = F.grid_sample(rotated, trans_mat, align_corners=True)
+        translated = F.grid_sample(rotated, trans_mat, align_corners=True) # b c h w
 
-        maps2 = torch.cat((maps_last.unsqueeze(1), translated.unsqueeze(1)), 1)
+        maps2 = torch.cat((maps_last.unsqueeze(1), translated.unsqueeze(1)), 1)  # b 2 c h w
 
         map_pred, _ = torch.max(maps2, 1)
-        # # ****************
-        # cv2.imwrite(f"debug_image/image/map_pred_{self.step}.png",map_pred[0][0].detach().cpu().numpy()*255)
-        # # ********************
-        return fp_map_pred, map_pred, pose_pred, current_poses
+        last_explore = translated[:,1,:,:] # b h w
+        return fp_map_pred, map_pred, pose_pred, current_poses, last_explore

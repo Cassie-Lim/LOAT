@@ -102,12 +102,12 @@ class VecPyTorch():
         return reward
 
     def plan_act_and_preprocess(self, inputs, goal_spotted):
-        obs, reward, done, info, gs, next_step_dict = self.venv.plan_act_and_preprocess(
+        obs, reward, done, info, gs, next_step_dict, planner_inputs = self.venv.plan_act_and_preprocess(
             inputs, goal_spotted)
         obs = torch.from_numpy(obs).float().to(self.device)
         reward = torch.from_numpy(reward).float()
         # return obs, reward, done, info, gs[0], next_step_dict[0]
-        return obs, reward, done, info, gs, next_step_dict
+        return obs, reward, done, info, gs, next_step_dict, planner_inputs
 
     def get_instance_mask(self):
         return self.venv.get_instance_mask()
@@ -118,6 +118,11 @@ class VecPyTorch():
     def close(self):
         return self.venv.close()
 
+    # ************
+    def reset_plan(self,second_object,caution_pointers,reset_types):
+        self.venv.reset_plan(second_object,caution_pointers,reset_types)
+    # **************
+
 
 def make_env_fn_alfred(args, scene_names, rank):
     env = Sem_Exp_Env_Agent_Thor(args, scene_names, rank)
@@ -127,9 +132,15 @@ def make_env_fn_alfred(args, scene_names, rank):
 def construct_envs_alfred(args):
     args_list = []
     scene_names_list = [[] for i in range(args.num_processes)]
-
-    files = json.load(open(args.splits))[
-        args.eval_split][args.from_idx:args.to_idx]
+    if args.run_idx_file is None:
+        files = json.load(open(args.splits))[
+            args.eval_split][args.from_idx:args.to_idx]
+    else:
+        files_all = json.load(open(args.splits))[
+            args.eval_split]
+        idx = json.load(open(args.run_idx_file))[args.from_idx:args.to_idx]
+        files = [files_all[i] for i in idx]
+        
     for e, f in enumerate(files):
         remainder = e % args.num_processes
         f["scene_num"] = e

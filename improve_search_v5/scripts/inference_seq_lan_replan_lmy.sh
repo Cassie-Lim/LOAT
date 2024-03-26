@@ -53,4 +53,4 @@ python improve_search_v5/main.py \
 --max_next_goal_request 8 \
 --record_replan \
 --attn_mode ${ATTN_MODE} \
---visualize 1
+# --visualize 1

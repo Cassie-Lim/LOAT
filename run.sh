@@ -1,4 +1,7 @@
+# Xvfb :99 -screen 0 1024x768x16 &
+
 DISPLAY=0.0
+DISPLAY=99
 # LANG_GRANULARITY="high_low"
 LANG_GRANULARITY="high"
 ATTN_MODE="cap_avg_auto"
@@ -26,6 +29,6 @@ TO_IDX=1
 echo $SET
 echo $FROM_IDX
 echo $TO_IDX
-CUDA_VISIBLE_DEVICES=1 improve_search_v5/scripts/inference_seq_lan_replan_lmy.sh ${FROM_IDX} ${TO_IDX} ${SET} ${SET_DN} "aggregate_sum sem_search_all spatial_norm temperature_annealing new_obstacle_fn no_slice_replay" "lan_locs" ${LANG_GRANULARITY} 0 ${DISPLAY} ${ATTN_MODE}
+CUDA_VISIBLE_DEVICES=2 improve_search_v5/scripts/inference_seq_lan_replan_lmy.sh ${FROM_IDX} ${TO_IDX} ${SET} ${SET_DN} "aggregate_sum sem_search_all spatial_norm temperature_annealing new_obstacle_fn no_slice_replay" "lan_locs" ${LANG_GRANULARITY} 0 ${DISPLAY} ${ATTN_MODE}
 
 # 173-308 515-617 719-821

@@ -951,7 +951,7 @@ class CAP(nn.Module):
             super().__init__()
             self.attn_mode = attn_mode
             # Guidance Attention
-            self.llm_object_attribute = json.load(open("/home/lmy/prompter-alfred/llm_info/llm_attr.json", "r"))
+            self.llm_object_attribute = json.load(open("llm_info/llm_attr.json", "r"))
             self.map_all_objects2idx = {obj: i for i, obj in enumerate(constants.map_all_objects)}  # 73
             self.large_objects2idx = {obj: i for i, obj in enumerate(constants.map_save_large_objects)}  # 24
             self.large_idx2objects = {i: obj for obj,i in self.large_objects2idx.items()}  # 24

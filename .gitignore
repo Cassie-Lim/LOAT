@@ -4,6 +4,7 @@
 *.bin
 .idea/
 .vscode/
+backup/
 habitat-lab/
 models_new/
 models/depth/depth_models/

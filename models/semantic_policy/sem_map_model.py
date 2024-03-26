@@ -18,8 +18,8 @@ import skimage.morphology
 # *************
 import cv2
 import pickle
-from improve_search_v4.language_parse.utils import * #与alfred traj数据交互的函数
-from improve_search_v4.semantic_policy.get_search_loc import *
+from language_parse.utils import * 
+from semantic_policy.get_search_loc import *
 import re
 
 import torch.nn.functional as F
@@ -520,7 +520,7 @@ class SEQ_SEARCH(nn.Module):
         # 加载语言位置
         if "lan_locs" in self.options:
             self.use_lan_locs = True
-            parse_data_path = "improve_search_v4/language_parse/data"
+            parse_data_path = "language_parse/data"
             file_name = "parse_results_"+self.split+"_"+ self.language_granularity+".json"
             print(f"use parse results of {self.language_granularity}, the file name is {file_name}")
             with open(os.path.join(parse_data_path,file_name), "r") as f:
@@ -853,8 +853,8 @@ class SEQ_SEARCH(nn.Module):
                                 out_dname, "large_search_info", f"{steps_taken}.png"),
                             plot_type=None, names=[self.go_target,'explored_large','prob_scores'], wrap_sz=3)
                     if debug:
-                        pickle.dump(recep.cpu(),open(f"improve_search_v4/debug_data/recep_{steps_taken}.pkl",'wb'))
-                        pickle.dump(self.explored_large.cpu(),open(f"improve_search_v4/debug_data/explored_large_{steps_taken}.pkl",'wb'))
+                        pickle.dump(recep.cpu(),open(f"debug_data/recep_{steps_taken}.pkl",'wb'))
+                        pickle.dump(self.explored_large.cpu(),open(f"debug_data/explored_large_{steps_taken}.pkl",'wb'))
             else:
                 prob_scores = recep
                 # 可视化
@@ -864,9 +864,9 @@ class SEQ_SEARCH(nn.Module):
                                 out_dname, "large_search_info", f"{steps_taken}.png"),
                             plot_type=None, names=[self.go_target], wrap_sz=1)
                     if debug:
-                        pickle.dump(recep.cpu(),open(f"improve_search_v4/debug_data/recep_{steps_taken}.pkl","wb"))
+                        pickle.dump(recep.cpu(),open(f"debug_data/recep_{steps_taken}.pkl","wb"))
             if debug:
-                pickle.dump(curr_loc.cpu(),open(f"improve_search_v4/debug_data/curr_loc_{steps_taken}.pkl",'wb'))
+                pickle.dump(curr_loc.cpu(),open(f"debug_data/curr_loc_{steps_taken}.pkl",'wb'))
         else: # go_target is None
             if target_name in constants.map_all_objects:
                 # self.cap.set_guidance_rate(steps_taken)

@@ -1,7 +1,6 @@
 import numpy as np
 import torch
 
-from agents.sem_exp_thor import Sem_Exp_Env_Agent_Thor
 
 from .utils.vector_env import VectorEnv, ThreadedVectorEnv
 
@@ -125,6 +124,11 @@ class VecPyTorch():
 
 
 def make_env_fn_alfred(args, scene_names, rank):
+    if args.ros:
+        print("Using ROS setup")
+        from agents.sem_exp_thor_ros import Sem_Exp_Env_Agent_Thor
+    else:
+        from agents.sem_exp_thor import Sem_Exp_Env_Agent_Thor
     env = Sem_Exp_Env_Agent_Thor(args, scene_names, rank)
     return env
 

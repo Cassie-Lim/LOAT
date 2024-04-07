@@ -453,12 +453,10 @@ class SEQ_SEARCH(nn.Module):
         #     (240, 240), num_sem_categories=24, attn_mode="cap_avg_auto").to(device=device)
         # sd = torch.load(
         #     f'models/semantic_policy/cap_dict/cap_avg_auto.pt', map_location=device)
-        new = "_v2"
-        new = ""
         self.cap =  CAP(
             (240, 240), num_sem_categories=24, attn_mode=attn_mode, guidance_rate=0).to(device=device)
         sd = torch.load(
-            f'models/semantic_policy/cap_dict/{attn_mode}{new}.pt', map_location=device)
+            f'models/semantic_policy/cap_dict/{attn_mode}.pt', map_location=device)
         self.cap.load_state_dict(sd)
         del sd
         # input shape is (240, 240)

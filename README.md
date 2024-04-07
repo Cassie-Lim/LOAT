@@ -2,11 +2,6 @@
 
 [Advancing Object Goal Navigation Through LLM-enhanced Object Affinities Transfer](https://arxiv.org/abs/2403.09971)<br />
 
-
-![example](./miscellaneous/32_look_at_obj_in_light-Bowl-None-DeskLamp-308_trial_T20190907_133953_562557.gif)
-
-
-
 ## Setting up the environment
 
 ### Basics
@@ -66,7 +61,7 @@
       mv Pretrained_Models_FILM/depth_models models/depth/depth_models
       mv Pretrained_Models_FILM/new_best_model.pt models/semantic_policy/best_model_multi.pt
       ```
-
+   3. Download the model weight for pretrained LOAT-P semantic policy from [here](https://drive.google.com/drive/folders/1XSB77pWJmC8NA8INVbCofP918fdoikEk?usp=drive_link). Move the downloaded weights to `models/semantic_policy/cap_dict/`
 ### Running with headless machines
 
 Running ALFRED environment on headless machines is not straightforward, and it heavily depends on your hardware configuration. The root of the problem is that ALFRED is based on Unity, which requires some sort of display to operate properly. Unfortunately, headless machines do not have displays, so it must be substituted by a virtual display, which is not straightforward to set up.
@@ -113,9 +108,14 @@ We will introduce here what worked for us; please also refer to discussions in [
 
 ## Training / Evaluation
 > TODO: this part haven't be tidied yet
-Prompter is based solely on pretrained models. No additional training is performed.
+To train the semantic policy of LOAT-P from scratch, you could start with downloading the dataset used in FILM from [this link](https://drive.google.com/file/d/1TWxKSAxvYKA8hi1RyUgQ0CGmLSe4UR_n/view?usp=sharing) and extract it as `models/semantic_policy/data/maps`.
 
-If you plan on retraining the pretrained models used in Prompter, please refer to [this link](https://github.com/soyeonm/FILM/tree/public#train-models-mask-rcnn--depth-bert-semantic-policy).
+Then run `python models/semantic_policy/preprocess_data.py` to carry out the necessary preprocess.
+
+Run the following command for training:
+```
+python models/semantic_policy/my_train_map_multi.py --eval_freq 50 --dn YOUR_DESIRED_NAME --seed YOUR_SEED --lr 0.001 --num_epochs 1 
+```
 
 Evaluation and leaderboard submission is summarized in [this document](evaluation.md).
 

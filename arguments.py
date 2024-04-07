@@ -408,6 +408,7 @@ def get_args():
     # ************
 
     parser.add_argument('--attn_mode', type=str, default=None)
+    parser.add_argument('--ros', type=bool, default=False)
 
     # parse arguments
     args = parser.parse_args()

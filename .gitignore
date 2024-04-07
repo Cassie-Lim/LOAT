@@ -5,6 +5,7 @@
 .idea/
 .vscode/
 backup/
+bag_play/
 debug_data/
 habitat-lab/
 models/models_ckpt/

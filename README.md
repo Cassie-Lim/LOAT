@@ -40,14 +40,14 @@
    4. After this step, `alfred_data_all` directory should look like this:
 
       ```bash
-   alfred_data_all
-      └── json_2.1.0
-       ├── tests_unseen
-          ├── tests_seen
-          ├── valid_unseen
-          ├── tests_seen
-          ├── trial_T2019...
-          └── ...
+      alfred_data_all
+         └── json_2.1.0
+         ├── tests_unseen
+            ├── tests_seen
+            ├── valid_unseen
+            ├── tests_seen
+            ├── trial_T2019...
+            └── ...
       ```
 
 4. Download Trained models
@@ -132,7 +132,7 @@ Evaluation and leaderboard submission is summarized in [this document](evaluatio
 
 ## Acknowledgements
 
-Our codebase is heavily based on [So Yeon Min's FILM respository](https://github.com/soyeonm/FILM).
+Our codebase is heavily based on [So Yeon Min's FILM ](https://github.com/soyeonm/FILM) and [Yuki Inoue's Prompter respository](https://github.com/hitachi-rd-cv/prompter-alfred).
 
 FILM repository borrows ideas from the following repositories:
 
@@ -142,29 +142,15 @@ FILM repository borrows ideas from the following repositories:
 
 
 
-If you plan on using this repository or take any ideas from it, please remember to cite our paper, *Prompter*, and Min et al's *FILM*, which Prompter was heavily influenced by.
-
-#### Prompter
+If you intend to utilize this repository or derive inspiration from its contents, we kindly request that you cite our paper:
 
 ```
-@article{inoue2022prompter,
-  title={Prompter: Utilizing large language model prompting for a data efficient embodied instruction following},
-  author={Inoue, Yuki and Ohashi, Hiroki},
-  journal={arXiv preprint arXiv:2211.03267},
-  year={2022}
-}
-```
-
-#### FILM
-
-```
-@misc{min2021film,
-      title={FILM: Following Instructions in Language with Modular Methods}, 
-      author={So Yeon Min and Devendra Singh Chaplot and Pradeep Ravikumar and Yonatan Bisk and Ruslan Salakhutdinov},
-      year={2021},
-      eprint={2110.07342},
+@misc{lin2024advancing,
+      title={Advancing Object Goal Navigation Through LLM-enhanced Object Affinities Transfer}, 
+      author={Mengying Lin and Yaran Chen and Dongbin Zhao and Zhaoran Wang},
+      year={2024},
+      eprint={2403.09971},
       archivePrefix={arXiv},
-      primaryClass={cs.CL}
+      primaryClass={cs.RO}
 }
 ```
-

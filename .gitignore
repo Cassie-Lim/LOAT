@@ -2,6 +2,7 @@
 *.pth
 *.txt
 *.bin
+*.out
 .idea/
 .vscode/
 backup/
@@ -20,7 +21,7 @@ alfred_utils/models/pre-trained_models/
 pretrained_models/
 !alfred_utils/env/*
 alfred_data_all/
-pictures/*
+pictures/
 *.png
 *results*/
 # Byte-compiled / optimized / DLL files

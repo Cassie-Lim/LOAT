@@ -62,7 +62,7 @@ class Sem_Exp_Env_Agent_Thor(PoseCameraListener):
     """
 
     def __init__(self, args, scene_names, rank):
-        super().__init__(args, rank, player_screen_height=512, player_screen_width=512)
+        # super().__init__(args, rank, player_screen_height=512, player_screen_width=512)
         self.fails_cur = 0
 
         self.args = args
@@ -124,42 +124,6 @@ class Sem_Exp_Env_Agent_Thor(PoseCameraListener):
 
 
         self.do_log = self.args.debug_local
-
-
-        #Depth
-        # Changed by Trisoil
-        self.depth_img_processor = AutoImageProcessor.from_pretrained('models/models_ckpt/dpt-dinov2-base-nyu')
-        
-        self.dino_depth = DPTForDepthEstimation.from_pretrained('models/models_ckpt/dpt-dinov2-base-nyu')
-        self.dino_depth.load_state_dict(torch.load('models/models_ckpt/base_epoch_36.pth'))
-        self.dino_depth.cuda(self.args.depth_gpu)
-        # self.dino_depth =  torch.nn.DataParallel(self.dino_depth, device_ids=[0, 1, 2, 3])
-        print('Finish loading dino depth model')
-
-        #Depth
-        # # if replan
-        # self.replan = True
-        # self.SubTask_fail_num = 0
-        # self.SubTask_pointer = 0
-        # Clip
-        # device = "cuda" if torch.cuda.is_available() else "cpu"
-        if self.args.use_replan:
-            self.clip_gpu =  torch.device("cuda:" + str(args.which_gpu) if args.cuda else "cpu")
-            self.clip_model, clip_preprocess = clip.load("ViT-B/32", device=self.clip_gpu)
-            self.clip_tokenizer = clip.tokenize
-            print('use replan')
-
-        # 加载plan数据
-        if self.args.subgoal_file is not None:
-            self.plan_data = json.load(open(self.args.subgoal_file,'r'))
-
-
-
-    
-    def load_traj(self, scene_name):
-        json_dir = 'alfred_data_all/json_2.1.0/' + scene_name['task'] + '/pp/ann_' + str(scene_name['repeat_idx']) + '.json'
-        traj_data = json.load(open(json_dir))
-        return traj_data
 
     
     def load_initial_scene(self):
@@ -248,8 +212,10 @@ class Sem_Exp_Env_Agent_Thor(PoseCameraListener):
 
             # self.picture_folder_name = "pictures/" + self.args.eval_split + "/"+ self.args.dn + "/" + str(self.args.from_idx + self.scene_pointer* self.args.num_processes + self.rank) + "/"
             # 这里的picture name，如果指定了id,就不准确
-            self.picture_folder_name = "pictures/" + self.args.eval_split + "/"+ self.args.dn + "/" + str(episode_no) + "/"
-            if self.args.save_pictures and not (episode_no in self.args.skip_indices):
+            self.picture_folder_name = "pictures/" 
+            # self.picture_folder_name = "pictures/" + self.args.eval_split + "/"+ self.args.dn + "/" + str(episode_no) + "/"
+            if self.args.save_pictures:
+            # if self.args.save_pictures and not (episode_no in self.args.skip_indices):
                 # ******************
                 if os.path.exists(self.picture_folder_name):
                     import shutil
@@ -595,14 +561,15 @@ class Sem_Exp_Env_Agent_Thor(PoseCameraListener):
             self.args.num_sem_categories = self.args.num_sem_categories + 30
         print(f"self.args.num_sem_categories are {self.args.num_sem_categories}")
 
-    def setup_scene(self, traj_data, task_type, r_idx, args, reward_type='dense'):
+    def setup_scene(self, args):
+    # def setup_scene(self, traj_data, task_type, r_idx, args, reward_type='dense'):
         args = self.args
+        self.picture_folder_name = args.picture_folder_name
+        # obs, info = super().setup_scene(traj_data,task_type, r_idx, args, reward_type)
+        # obs, seg_print = self._preprocess_obs(obs)
 
-        obs, info = super().setup_scene(traj_data,task_type, r_idx, args, reward_type)
-        obs, seg_print = self._preprocess_obs(obs)
-
-        self.obs_shape = obs.shape
-        self.obs = obs
+        # self.obs_shape = obs.shape
+        # self.obs = obs
 
         # Episode initializations
         map_shape = (args.map_size_cm // args.map_resolution,
@@ -613,9 +580,9 @@ class Sem_Exp_Env_Agent_Thor(PoseCameraListener):
         self.curr_loc = [args.map_size_cm/100.0/2.0,
                          args.map_size_cm/100.0/2.0, 0.]
         self.last_action_ogn = None
-        self.seg_print = seg_print
+        # self.seg_print = seg_print
 
-        return obs, info
+        # return obs, info
 
     def getWorldCoord3DObs(self, depth_map):
         hei, wid = depth_map.shape[:2]
@@ -1431,7 +1398,20 @@ class Sem_Exp_Env_Agent_Thor(PoseCameraListener):
             'delete_lamp': False, 'fails_cur': self.fails_cur}
 
         return obs, rew, done, info, False, next_step_dict
+    def update_visited(self, pose_pred):
+        curr_x, curr_y, curr_o, gx1, gx2, gy1, gy2 = pose_pred
 
+        self.last_loc = self.curr_loc
+        self.curr_loc = [curr_x, curr_y, curr_o]
+
+        gx1, gx2, gy1, gy2 = int(gx1), int(gx2), int(gy1), int(gy2)
+        self.curr_loc_grid = self.meter2coord(
+            self.curr_loc[1], self.curr_loc[0], gy1, gx1, self.visited.shape)
+        prev = self.meter2coord(self.last_loc[1], self.last_loc[0], gy1, gx1, self.visited.shape)
+
+        self.visited[gx1:gx2, gy1:gy2] = cv2.line(
+            self.visited[gx1:gx2, gy1:gy2], (prev[1], prev[0]),
+            (self.curr_loc_grid[1], self.curr_loc_grid[0]), 1, 1)
     def plan_act_and_preprocess(self, planner_inputs, goal_spotted):
         # ****************************
         explored_map = planner_inputs["exp_pred"]
@@ -2048,20 +2028,20 @@ class Sem_Exp_Env_Agent_Thor(PoseCameraListener):
             if depth.shape!=(300,300,1):
                 depth = cv2.resize(depth,(300,300),interpolation=cv2.INTER_NEAREST)
                 depth =np.expand_dims(depth,axis=2)
-            if self.args.save_pictures:
-                depth_imgname = os.path.join(self.picture_folder_name, '%s', "depth_" + str(self.steps_taken) + ".png")
-                cv2.imwrite(depth_imgname % "depth", depth * 100)
+            # if self.args.save_pictures:
+            #     depth_imgname = os.path.join(self.picture_folder_name, '%s', "depth_" + str(self.steps_taken) + ".png")
+            #     cv2.imwrite(depth_imgname % "depth", depth * 100)
 
         rgb = np.asarray(self.res(rgb.astype(np.uint8)))
 
-        depth = self._preprocess_depth_new(depth, self.holding_mask)
+        # depth = self._preprocess_depth_new(depth, self.holding_mask)
 
-        # depth = self._preprocess_depth(depth)
+        depth = self._preprocess_depth(depth)
         # cv2.imwrite(f'debug_image/depth_pro_{self.steps_taken}.png',depth)
         
-        if self.args.save_pictures:
-            depth_imgname = os.path.join(self.picture_folder_name, '%s', "depth_" + str(self.steps_taken) + ".png")
-            cv2.imwrite(depth_imgname % "depth_thresholded", depth)
+        # if self.args.save_pictures:
+        #     depth_imgname = os.path.join(self.picture_folder_name, '%s', "depth_" + str(self.steps_taken) + ".png")
+        #     cv2.imwrite(depth_imgname % "depth_thresholded", depth)
 
         ds = args.env_frame_width // args.frame_width # Downscaling factor
         if ds != 1:
@@ -2070,7 +2050,37 @@ class Sem_Exp_Env_Agent_Thor(PoseCameraListener):
 
         depth = np.expand_dims(depth, axis=2)
         state = np.concatenate((rgb, depth, sem_seg_pred), axis = 2).transpose(2, 0, 1)
+        sem_labels = np.argmax(sem_seg_pred.transpose(2, 0, 1), axis=0)
+        color_palette2 = [1.0, 1.0, 1.0,
+                0.6, 0.6, 0.6,
+                0.95, 0.95, 0.95,
+                0.96, 0.36, 0.26,
+                0.12156862745098039, 0.47058823529411764, 0.7058823529411765,
+                0.9400000000000001, 0.7818, 0.66,
+                0.9400000000000001, 0.8868, 0.66,
+                0.8882000000000001, 0.9400000000000001, 0.66,
+                0.7832000000000001, 0.9400000000000001, 0.66,
+                0.6782000000000001, 0.9400000000000001, 0.66,
+                0.66, 0.9400000000000001, 0.7468000000000001,
+                0.66, 0.9400000000000001, 0.9018000000000001,
+                0.66, 0.9232, 0.9400000000000001,
+                0.66, 0.8182, 0.9400000000000001,
+                0.66, 0.7132, 0.9400000000000001,
+                0.7117999999999999, 0.66, 0.9400000000000001,
+                0.8168, 0.66, 0.9400000000000001,
+                0.9218, 0.66, 0.9400000000000001,
+                0.9400000000000001, 0.66, 0.9031999999999998,
+                0.9400000000000001, 0.66, 0.748199999999999]
+        
+        color_palette2 += self.flattened.tolist()
+        
+        color_palette2 = [int(x*255.) for x in color_palette2]
+        color_palette = color_palette2
 
+        semantic_img = self.colorImage(sem_labels, color_palette)
+        if self.args.save_pictures:
+            cv2.imwrite(self.picture_folder_name + "Sem_Map/"+ "Sem_Seg_" + str(self.steps_taken) + ".png", semantic_img)
+        
         return state, sem_seg_pred
 
     def _preprocess_depth(self, depth):

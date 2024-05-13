@@ -123,17 +123,18 @@ class Sem_Exp_Env_Agent_Thor(ThorEnvCode):
 
 
         self.do_log = self.args.debug_local
-
+        self.depth_gpu = self.args.depth_gpu
 
         #Depth
-        # Changed by Trisoil
-        self.depth_img_processor = AutoImageProcessor.from_pretrained('models/models_ckpt/dpt-dinov2-base-nyu')
-        
-        self.dino_depth = DPTForDepthEstimation.from_pretrained('models/models_ckpt/dpt-dinov2-base-nyu')
-        self.dino_depth.load_state_dict(torch.load('models/models_ckpt/base_epoch_36.pth'))
-        self.dino_depth.cuda(self.args.depth_gpu)
-        # self.dino_depth =  torch.nn.DataParallel(self.dino_depth, device_ids=[0, 1, 2, 3])
-        print('Finish loading dino depth model')
+        if self.args.use_learned_depth:
+            # Changed by Trisoil
+            self.depth_img_processor = AutoImageProcessor.from_pretrained('models/models_ckpt/dpt-dinov2-base-nyu')
+            
+            self.dino_depth = DPTForDepthEstimation.from_pretrained('models/models_ckpt/dpt-dinov2-base-nyu')
+            self.dino_depth.load_state_dict(torch.load('models/models_ckpt/base_epoch_36.pth'))
+            self.dino_depth.cuda(self.args.depth_gpu)
+            # self.dino_depth =  torch.nn.DataParallel(self.dino_depth, device_ids=[0, 1, 2, 3])
+            print('Finish loading dino depth model')
 
         #Depth
         # # if replan
@@ -203,6 +204,7 @@ class Sem_Exp_Env_Agent_Thor(ThorEnvCode):
 
 
         self.learned_depth_frame = None
+        self.gt_depth_frame = None
 
         self.picked_up_mask = None
         self.sliced_mask = None
@@ -635,7 +637,7 @@ class Sem_Exp_Env_Agent_Thor(ThorEnvCode):
         if mask is None or np.sum(mask) == 0:
             return None, False
 
-        depth_map = self.learned_depth_frame if self.args.learned_visibility else self.event.depth_frame / 1000
+        depth_map = self.learned_depth_frame if self.args.learned_visibility else cv2.resize(self.event.depth_frame,(300,300),interpolation=cv2.INTER_NEAREST) / 1000.0
 
         # xyz is agent centric, units in meters
         # +x axis: right, +y axis: away from the agent, +z axis: up
@@ -659,7 +661,7 @@ class Sem_Exp_Env_Agent_Thor(ThorEnvCode):
         if mask is None or np.sum(mask) == 0:
             return None, False
 
-        depth_map = self.learned_depth_frame if self.args.learned_visibility else self.event.depth_frame / 1000
+        depth_map = self.learned_depth_frame if self.args.learned_visibility else cv2.resize(self.event.depth_frame,(300,300),interpolation=cv2.INTER_NEAREST) / 1000.0
 
         # xyz is agent centric, units in meters
         # +x axis: right, +y axis: away from the agent, +z axis: up
@@ -756,8 +758,12 @@ class Sem_Exp_Env_Agent_Thor(ThorEnvCode):
                 self.pick_up_obj = self.goal_name
                 
                 # Changed by Trisoil
-                self.holding_mask = self.seg.H.diff_two_frames(self.prev_rgb, self.event.frame, self.learned_depth_frame, self.dino_depth_pred(self.event.frame).squeeze())
-                
+                if self.args.use_learned_depth:
+                    self.holding_mask = self.seg.H.diff_two_frames(self.prev_rgb, self.event.frame, self.learned_depth_frame, self.dino_depth_pred(self.event.frame).squeeze())
+                else:
+                    cur_gt_depth_frame = cv2.resize(self.event.depth_frame,(300,300),interpolation=cv2.INTER_NEAREST) / 1000.0
+                    self.holding_mask = self.seg.H.diff_two_frames(self.prev_rgb, self.event.frame, self.gt_depth_frame, cur_gt_depth_frame)
+                    self.gt_depth_frame = cur_gt_depth_frame
                 # 尝试去除拿起来的物体，使其不遮挡视线，调试用
                 # *****************
 
@@ -765,7 +771,13 @@ class Sem_Exp_Env_Agent_Thor(ThorEnvCode):
             self.picked_up = False
 
             # Changed by Trisoil
-            self.put_rgb_mask = self.seg.H.diff_two_frames(self.prev_rgb, self.event.frame, self.learned_depth_frame, self.dino_depth_pred(self.event.frame).squeeze())
+            if self.args.use_learned_depth:
+                self.put_rgb_mask = self.seg.H.diff_two_frames(self.prev_rgb, self.event.frame, self.learned_depth_frame, self.dino_depth_pred(self.event.frame).squeeze())
+            else:
+                cur_gt_depth_frame = cv2.resize(self.event.depth_frame,(300,300),interpolation=cv2.INTER_NEAREST) / 1000.0
+                self.put_rgb_mask = self.seg.H.diff_two_frames(self.prev_rgb, self.event.frame, self.gt_depth_frame, cur_gt_depth_frame)
+                self.gt_depth_frame = cur_gt_depth_frame
+            
             # self.put_rgb_mask = self.seg.H.diff_two_frames(self.prev_rgb, self.event.frame)
             self.picked_up_mask = None
             self.holding_mask = None
@@ -2050,7 +2062,7 @@ class Sem_Exp_Env_Agent_Thor(ThorEnvCode):
             if self.args.save_pictures:
                 depth_imgname = os.path.join(self.picture_folder_name, '%s', "depth_" + str(self.steps_taken) + ".png")
                 cv2.imwrite(depth_imgname % "depth", depth * 100)
-
+            self.gt_depth_frame = depth[:,:,0]
         rgb = np.asarray(self.res(rgb.astype(np.uint8)))
 
         depth = self._preprocess_depth_new(depth, self.holding_mask)

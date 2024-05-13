@@ -10,26 +10,27 @@ ATTN_MODE="cap_avg_auto"
 # SET=tests_unseen
 # SET=tests_seen 
 SET=valid_unseen  # 821
-SET=valid_seen  # 820
-SET_DN=cap_avg_auto_ros
+# SET=valid_seen  # 820
+# SET_DN=cap_avg_auto_ros
 # SET_DN=cap_avg_1
-# SET_DN=cap_avg_0.5
-# SET_DN=cap_avg_auto_v1_noexp # do not * explored_all
-# SET_DN=cap_avg_auto_v2_tmp
+SET_DN=cap_avg_auto
+SET_DN=cap_avg_auto_gt
+# SET_DN=test
 IDX_ID=$1
 # GAP=200
 GAP=103
-GAP=10
+# GAP=10
 BASE=668
-# ((FROM_IDX=${GAP}*(${IDX_ID}-1)))
-((FROM_IDX=${BASE}+${GAP}*(${IDX_ID}-1)))
+((FROM_IDX=${GAP}*(${IDX_ID}-1)))
+# ((FROM_IDX=${BASE}+${GAP}*(${IDX_ID}-1)))
 ((TO_IDX=${FROM_IDX}+${GAP}))
-FROM_IDX=0
-TO_IDX=1
+# FROM_IDX=0
+# TO_IDX=1
 echo $SET
 echo $FROM_IDX
 echo $TO_IDX
-CUDA_VISIBLE_DEVICES=2 scripts/inference_ros.sh ${FROM_IDX} ${TO_IDX} ${SET} ${SET_DN} "aggregate_sum sem_search_all spatial_norm temperature_annealing new_obstacle_fn no_slice_replay" "lan_locs" ${LANG_GRANULARITY} 0 ${DISPLAY} ${ATTN_MODE}
-# CUDA_VISIBLE_DEVICES=2 scripts/inference_seq_lan_replan.sh ${FROM_IDX} ${TO_IDX} ${SET} ${SET_DN} "aggregate_sum sem_search_all spatial_norm temperature_annealing new_obstacle_fn no_slice_replay" "lan_locs" ${LANG_GRANULARITY} 0 ${DISPLAY} ${ATTN_MODE}
+# CUDA_VISIBLE_DEVICES=2 scripts/inference_ros.sh ${FROM_IDX} ${TO_IDX} ${SET} ${SET_DN} "aggregate_sum sem_search_all spatial_norm temperature_annealing new_obstacle_fn no_slice_replay" "lan_locs" ${LANG_GRANULARITY} 0 ${DISPLAY} ${ATTN_MODE}
+# CUDA_VISIBLE_DEVICES=7 scripts/inference_seq_lan_replan.sh ${FROM_IDX} ${TO_IDX} ${SET} ${SET_DN} "aggregate_sum sem_search_all spatial_norm temperature_annealing new_obstacle_fn no_slice_replay" "lan_locs" ${LANG_GRANULARITY} 0 ${DISPLAY} ${ATTN_MODE}
+CUDA_VISIBLE_DEVICES=6 scripts/inference_seq_lan_replan_gtseg_depth.sh ${FROM_IDX} ${TO_IDX} ${SET} ${SET_DN} "aggregate_sum sem_search_all spatial_norm temperature_annealing new_obstacle_fn no_slice_replay" "lan_locs" ${LANG_GRANULARITY} 0 ${DISPLAY} ${ATTN_MODE}
 
 # 173-308 515-617 719-821

@@ -233,8 +233,9 @@ class SemgnetationHelper:
 			json.dump(color_to_obj_id_type, f)
 		self.img_tag += 1
 
-	def get_instance_mask_seg_alfworld_both(self):
-		rgb = copy.deepcopy(self.agent.event.frame)
+	def get_instance_mask_seg_alfworld_both(self, rgb=None):
+		if rgb is None:
+			rgb = copy.deepcopy(self.agent.event.frame)
 		rgb = cv2.resize(rgb, (300, 300))
 		ims = [rgb]
 		results_small = {
@@ -258,7 +259,8 @@ class SemgnetationHelper:
 
 		# result = self.yolo_model(self.agent.event.cv2img, conf=0.3, imgsz=1024, verbose=False, device=self.sem_seg_gpu)[0]
 		# big_rgb = cv2.resize(self.agent.event.cv2img, (1024,1024))
-		result = self.yolo_model(self.agent.event.cv2img, conf=0.5, imgsz=512, verbose=False, device=self.sem_seg_gpu)[0]	
+		result = self.yolo_model(ims, conf=0.5, imgsz=512, verbose=False, device=self.sem_seg_gpu)[0]	
+		# result = self.yolo_model(self.agent.event.cv2img, conf=0.5, imgsz=512, verbose=False, device=self.sem_seg_gpu)[0]	
 		# result = self.yolo_model(self.agent.event.cv2img, conf=0.3, imgsz=600, verbose=False, device=self.sem_seg_gpu)[0]	
 		# self.compare_GT(result)
 		# self.collect_wrong(result)
@@ -411,7 +413,7 @@ class SemgnetationHelper:
 
 		else:
 			#1. First get dict
-			self.get_instance_mask_seg_alfworld_both()
+			self.get_instance_mask_seg_alfworld_both(rgb)
 
 			#2. Get segmentation for map making
 			semantic_pred = self.segmentation_for_map()
@@ -421,7 +423,7 @@ class SemgnetationHelper:
 			# 	sem_vis = self.visualize_sem()
 			# 	sem_vis = cv2.cvtColor(sem_vis, cv2.COLOR_RGB2BGR)
 
-			if (self.agent.pointer==2  or (self.agent.pointer==1 and self.agent.last_success and self.agent.last_action_ogn == "PutObject"))and self.agent.task_type == 'pick_two_obj_and_place':
+			if not self.args.ros and(self.agent.pointer==2  or (self.agent.pointer==1 and self.agent.last_success and self.agent.last_action_ogn == "PutObject"))and self.agent.task_type == 'pick_two_obj_and_place':
 				small_len = len(self.segmented_dict['small']['scores'])
 				large_len = len(self.segmented_dict['large']['scores'])
 

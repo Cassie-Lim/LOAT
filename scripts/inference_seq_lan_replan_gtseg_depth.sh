@@ -24,8 +24,6 @@ python main.py \
 --max_fails 10 \
 --debug_local \
 --set_dn ${NAME} \
---learned_depth \
---use_sem_seg \
 --ignore_sliced \
 --which_gpu ${GPU_ID} \
 --depth_gpu ${GPU_ID} \
@@ -51,5 +49,4 @@ python main.py \
 --max_next_goal_request 8 \
 --record_replan \
 --attn_mode ${ATTN_MODE} \
---save_pictures 
-# --visualize 1
+# --save_pictures 

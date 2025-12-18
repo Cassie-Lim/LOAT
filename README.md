@@ -1,6 +1,31 @@
 # Advancing Object Goal Navigation Through LLM-enhanced Object Affinities Transfer
+[![Static Badge](https://img.shields.io/badge/-arXiv-B31B1B?logo=arxiv)](https://arxiv.org/abs/2403.09971)
+[![Static Badge](https://img.shields.io/badge/Project-Page-a)](https://cassie-lim.github.io/LOAT/)
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 
-[Advancing Object Goal Navigation Through LLM-enhanced Object Affinities Transfer](https://arxiv.org/abs/2403.09971)<br />
+
+This repository is the official implementation of the paper:
+
+> **Advancing Object Goal Navigation Through LLM-enhanced Object Affinities Transfer**
+>
+> [Mengying Lin](https://cassie-lim.github.io/)&ast;, [Shugao Liu]()&ast;, [Dingxi Zhang](https://kristen-z.github.io/), [Yaran Chen](https://scholar.google.com/citations?user=KZCyB_sAAAAJ&hl=zh-CN), [Zhaoran Wang](https://zhaoranwang.github.io/), [Haoran Li](https://scholar.google.com/citations?user=kalE5UIAAAAJ&hl=zh-CN), and [Dongbin Zhao](https://scholar.google.com/citations?user=RxvYlNQAAAAJ&hl=en). <br>
+> &ast;Equal contribution. <br> 
+> 
+> *arXiv preprint arXiv:2403.09971*, 2024 <br>
+> (Accepted for *2025 IEEE/RSJ International Conference on Intelligent Robots and Systems (IROS)*, 2025.)
+
+<figure style="text-align: center;">
+  <img
+    src="miscellaneous/research_question.png"
+    alt="The research question LOAT aims to solve."
+    width="600"
+  />
+  <figcaption>
+    The research question LOAT aims to solve.
+  </figcaption>
+</figure>
+
+
 
 ## Setting up the environment
 
@@ -145,12 +170,15 @@ FILM repository borrows ideas from the following repositories:
 If you intend to utilize this repository or derive inspiration from its contents, we kindly request that you cite our paper:
 
 ```
-@misc{lin2024advancing,
-      title={Advancing Object Goal Navigation Through LLM-enhanced Object Affinities Transfer}, 
-      author={Mengying Lin and Yaran Chen and Dongbin Zhao and Zhaoran Wang},
-      year={2024},
-      eprint={2403.09971},
-      archivePrefix={arXiv},
-      primaryClass={cs.RO}
-}
+@INPROCEEDINGS{11247308,
+  author={Lin, Mengying and Liu, Shugao and Zhang, Dingxi and Chen, Yaran and Wang, Zhaoran and Li, Haoran and Zhao, Dongbin},
+  booktitle={2025 IEEE/RSJ International Conference on Intelligent Robots and Systems (IROS)}, 
+  title={Advancing Object-Goal Navigation through LLM-enhanced Object Affinities Transfer}, 
+  year={2025},
+  volume={},
+  number={},
+  pages={18458-18465},
+  keywords={Training;Measurement;Learning systems;Vocabulary;Visualization;Navigation;Semantics;Habitats;Predictive models;Mobile robots},
+  doi={10.1109/IROS60139.2025.11247308}}
+
 ```
